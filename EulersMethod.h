@@ -8,7 +8,7 @@
 
 class EulersMethod {
 public:
-    int apply(double a, double b, double h);
+    int apply(double (*firstDerivative)(double, double), double a, double b, double h);
 };
 
 

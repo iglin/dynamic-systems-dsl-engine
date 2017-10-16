@@ -1,4 +1,5 @@
 #include <iostream>
+#include "InitialData.h"
 
 using namespace std;
 
@@ -12,6 +13,9 @@ double printer(double (*f)(double) ) {
 
 int main() {
     cout << "Hello, World!" << endl;
-    printer(func);
+    //printer(func);
+
+    auto *initialData = new InitialData();
+    cout << initialData->firstDerivativeX(3, 5);
     return 0;
 }

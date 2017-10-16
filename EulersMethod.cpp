@@ -9,28 +9,23 @@
 
 using namespace std;
 
-// y' =
-double F(double x, double y){
-    return 3*sin(2*y)+x;
-}
-
-int EulersMethod::apply(double a, double b, double h) {
+int EulersMethod::apply(double (*firstDerivative)(double, double), double a, double b, double h) {
     //double a = 0;
    // double b = 1;
    // double h=0.1;
-    double n=(b-a)/h;
-    double X[(int)n]; double Y[(int)n];
-    X[0]=a; Y[0]=2;
-    for(int i=1; i<=n; i++){
-        X[i]=a+i*h;
-        Y[i]=Y[i-1]+h*F(X[i-1],Y[i-1]);
+    double n = (b - a) / h;
+    double xArray[(int) n]; double yArray[(int) n];
+    xArray[0]=a; yArray[0]=2;
+    for(int i = 1; i <= n; i++){
+        xArray[i]=a + i * h;
+        yArray[i]=yArray[i-1]+h * (*firstDerivative)(xArray[i - 1], yArray[i - 1]);
     }
     for(int i=0; i<=n; i++){
-        cout << "X["<<i<<"]="<<X[i] <<" ";
+        cout << "X["<<i<<"]="<<xArray[i] <<" ";
     }
     cout << endl;
     for(int i=0; i<=n; i++){
-        cout << "Y["<<i<<"]="<<Y[i] << " ";
+        cout << "Y["<<i<<"]="<<yArray[i] << " ";
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
