@@ -1,5 +1,6 @@
 #include <iostream>
 #include "InitialData.h"
+#include "EulersMethod.h"
 
 using namespace std;
 
@@ -12,10 +13,19 @@ double printer(double (*f)(double) ) {
 }
 
 int main() {
-    cout << "Hello, World!" << endl;
     //printer(func);
 
     auto *initialData = new InitialData();
-    cout << initialData->firstDerivativeX(3, 5);
+    initialData->setT0(0);
+    initialData->setTFinal(1);
+    double h = 0.1;
+
+    EulersMethod::apply(initialData->firstDerivativeX,
+                                           initialData->getT0(),
+                                           initialData->getTFinal(),
+                                           h
+    );
+    // << pointsTable->toString() << endl;
+
     return 0;
 }

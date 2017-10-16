@@ -6,9 +6,12 @@
 #define DYNAMIC_SYSTEMS_DSL_EULERSMETHOD_H
 
 
+#include "PointsTable.h"
+
 class EulersMethod {
 public:
-    int apply(double (*firstDerivative)(double, double), double a, double b, double h);
+    static PointsTable *apply(double (*firstDerivative)(double, double), double a, double b, double h);
+    //static PointsTable *apply(double &firstDerivative(double, double), double a, double b, double h);
 };
 
 
