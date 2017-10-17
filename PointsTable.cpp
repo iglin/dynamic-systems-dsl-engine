@@ -56,7 +56,7 @@ string PointsTable::toString() {
     stringstream result;
     result << string("PointsTable:[");
     for (auto it = points.begin(); it != points.end();) {
-        result << stringifyPoint(*it);
+        //result << stringifyPoint(*it);
         if (it != points.end()) result << "," << endl;
     }
     result << "]";

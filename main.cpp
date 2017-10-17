@@ -1,6 +1,7 @@
 #include <iostream>
 #include "InitialData.h"
 #include "EulersMethod.h"
+#include "FirstDerivativeX.h"
 
 using namespace std;
 
@@ -20,12 +21,16 @@ int main() {
     initialData->setTFinal(1);
     double h = 0.1;
 
-    EulersMethod::apply(initialData->firstDerivativeX,
+    auto firstDerivativeX = new FirstDerivativeX();
+    cout << "first derivative x created" << endl;
+    auto pointsTable = EulersMethod::apply(firstDerivativeX, initialData->getT0(), initialData->getTFinal(), h);
+    /*EulersMethod::apply(initialData->firstDerivativeX,
                                            initialData->getT0(),
                                            initialData->getTFinal(),
                                            h
-    );
-    // << pointsTable->toString() << endl;
+    );*/
+    cout << "euler finished" << endl;
+    cout << pointsTable->toString() << endl;
 
     return 0;
 }
