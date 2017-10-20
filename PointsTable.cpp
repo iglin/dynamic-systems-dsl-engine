@@ -37,8 +37,8 @@ double PointsTable::getY(double x) {
 }
 
 double PointsTable::getX(double y) {
-    for (auto it = points.begin(); it != points.end(); it++) {
-        if (it->second == y) return it->first;
+    for (auto &point : points) {
+        if (point.second == y) return point.first;
     }
     return NULL;
 }
@@ -58,13 +58,32 @@ string PointsTable::toString() {
     stringstream result;
     result << string("PointsTable:[");
     bool first = true;
-    for (auto it = points.begin(); it != points.end(); it++) {
+    for (auto &point : points) {
         if (!first) result << "," << endl;
-        result << stringifyPoint(*it);
+        result << stringifyPoint(point);
         first = false;
     }
     result << "]";
     return result.str();
 }
 
+string PointsTable::pointToJson(pair<double, double> point) {
+    stringstream result;
+    result << string(R"({"x":")") << to_string(point.first)
+           << string(R"(", "y":")") << to_string(point.second) << "\'}";
+    return result.str();
+}
+
+string PointsTable::toJson() {
+    stringstream result;
+    result << string("[") << endl;
+    bool first = true;
+    for (auto &point : points) {
+        if (!first) result << "," << endl;
+        result << pointToJson(point);
+        first = false;
+    }
+    result << "]";
+    return result.str();
+}
 

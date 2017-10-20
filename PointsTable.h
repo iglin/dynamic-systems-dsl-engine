@@ -14,6 +14,7 @@ private:
     map<double, double> points;
 
     string stringifyPoint(pair<double, double> point);
+    string pointToJson(pair<double, double> point);
 public:
     PointsTable();
 
@@ -36,6 +37,8 @@ public:
     void setPoints(const map<double, double> &points);
 
     string toString();
+
+    string toJson();
 };
 
 
