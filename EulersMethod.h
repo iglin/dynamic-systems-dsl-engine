@@ -16,7 +16,7 @@ public:
     //static PointsTable *apply(double &firstDerivative(double, double), double a, double b, double h);
     */
 
-    static PointsTable *apply(FirstDerivative *firstDerivative, double a, double b, double h);
+    static PointsTable *apply(FirstDerivative *firstDerivative, double y0, double a, double b, double h);
 };
 
 

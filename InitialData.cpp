@@ -8,7 +8,7 @@
 
 #define dx (3 * sin(2 * x) + t)
 #define dy (3 * sin(2 * y) + t)
-//#define dz (3 * sin(2 * z) + t)
+#define dz (3 * sin(2 * z) + t)
 
 
 InitialData::InitialData() = default;

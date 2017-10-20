@@ -14,6 +14,8 @@ const map<double, double> &PointsTable::getPoints() const {
     return points;
 }
 
+// TODO: cover API with tests
+
 void PointsTable::setPoints(const map<double, double> &points) {
     PointsTable::points = points;
 }
@@ -35,7 +37,7 @@ double PointsTable::getY(double x) {
 }
 
 double PointsTable::getX(double y) {
-    for (auto it = points.begin(); it != points.end();) {
+    for (auto it = points.begin(); it != points.end(); it++) {
         if (it->second == y) return it->first;
     }
     return NULL;
@@ -55,9 +57,11 @@ string PointsTable::stringifyPoint(pair<double, double> point) {
 string PointsTable::toString() {
     stringstream result;
     result << string("PointsTable:[");
-    for (auto it = points.begin(); it != points.end();) {
-        //result << stringifyPoint(*it);
-        if (it != points.end()) result << "," << endl;
+    bool first = true;
+    for (auto it = points.begin(); it != points.end(); it++) {
+        if (!first) result << "," << endl;
+        result << stringifyPoint(*it);
+        first = false;
     }
     result << "]";
     return result.str();

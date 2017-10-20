@@ -8,7 +8,7 @@
 
 #include "FirstDerivative.h"
 
-class FirstDerivativeZ : FirstDerivative {
+class FirstDerivativeZ : public FirstDerivative {
     double calculate(double coord, double t) override;
 
 public:

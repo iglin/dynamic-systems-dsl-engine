@@ -2,35 +2,45 @@
 #include "InitialData.h"
 #include "EulersMethod.h"
 #include "FirstDerivativeX.h"
+#include "FirstDerivativeZ.h"
+#include "FirstDerivativeY.h"
 
 using namespace std;
 
-double func(double x) {
-    return x*x;
-}
-
-double printer(double (*f)(double) ) {
-    cout << (*f)(5);
-}
-
 int main() {
-    //printer(func);
-
     auto *initialData = new InitialData();
+    initialData->setX0(2);
+    initialData->setY0(2);
+    initialData->setZ0(2);
     initialData->setT0(0);
     initialData->setTFinal(1);
     double h = 0.1;
 
     auto firstDerivativeX = new FirstDerivativeX();
-    cout << "first derivative x created" << endl;
-    auto pointsTable = EulersMethod::apply(firstDerivativeX, initialData->getT0(), initialData->getTFinal(), h);
+    auto firstDerivativeY = new FirstDerivativeY();
+    auto firstDerivativeZ = new FirstDerivativeZ();
+
+    PointsTable *pointsTableX, *pointsTableY, *pointsTableZ;
+#pragma omp parallel
+    {
+        pointsTableX = EulersMethod::apply(firstDerivativeX, initialData->getX0(), initialData->getT0(),
+                                                initialData->getTFinal(), h);
+        pointsTableY = EulersMethod::apply(firstDerivativeY, initialData->getY0(), initialData->getT0(),
+                                                initialData->getTFinal(), h);
+        pointsTableZ = EulersMethod::apply(firstDerivativeZ, initialData->getZ0(), initialData->getT0(),
+                                                initialData->getTFinal(), h);
+    }
     /*EulersMethod::apply(initialData->firstDerivativeX,
                                            initialData->getT0(),
                                            initialData->getTFinal(),
                                            h
     );*/
-    cout << "euler finished" << endl;
-    cout << pointsTable->toString() << endl;
+    cout << "X table" << endl;
+    cout << pointsTableX->toString() << endl;
+    cout << "Y table" << endl;
+    cout << pointsTableY->toString() << endl;
+    cout << "Z table" << endl;
+    cout << pointsTableZ->toString() << endl;
 
     return 0;
 }
