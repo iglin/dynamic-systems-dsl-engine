@@ -33,7 +33,7 @@ PointsTable *EulersMethod::apply(FirstDerivative *firstDerivative, double y0, do
     table->addPoint(a, y0);
     xArray[0] = a;
     for (int i = 1; i <= n; i++) {
-        xArray[i] = a + i * h;
+        xArray[i] = xArray[i - 1] + h;
         double y = table->getY(xArray[i - 1]) + h * firstDerivative->calculate(xArray[i - 1], table->getY(xArray[i - 1]));
         table->addPoint(xArray[i], y);
     }

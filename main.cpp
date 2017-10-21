@@ -4,6 +4,7 @@
 #include "FirstDerivativeX.h"
 #include "FirstDerivativeZ.h"
 #include "FirstDerivativeY.h"
+#include "RungeKuttaMethod.h"
 
 using namespace std;
 
@@ -27,7 +28,7 @@ int main() {
                                                 initialData->getTFinal(), h);
         pointsTableY = EulersMethod::apply(firstDerivativeY, initialData->getY0(), initialData->getT0(),
                                                 initialData->getTFinal(), h);
-        pointsTableZ = EulersMethod::apply(firstDerivativeZ, initialData->getZ0(), initialData->getT0(),
+        pointsTableZ = RungeKuttaMethod::apply(firstDerivativeZ, initialData->getZ0(), initialData->getT0(),
                                                 initialData->getTFinal(), h);
     }
     /*EulersMethod::apply(initialData->firstDerivativeX,
@@ -38,9 +39,9 @@ int main() {
     cout << "X table" << endl;
     cout << pointsTableX->toString() << endl;
     cout << "Y table" << endl;
-    cout << pointsTableY->toString() << endl;
+    cout << pointsTableY->toJson() << endl;
     cout << "Z table" << endl;
-    cout << pointsTableZ->toString() << endl;
+    cout << pointsTableZ->toJson() << endl;
 
     return 0;
 }

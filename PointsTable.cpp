@@ -76,7 +76,7 @@ string PointsTable::pointToJson(pair<double, double> point) {
 
 string PointsTable::toJson() {
     stringstream result;
-    result << string("[") << endl;
+    result << string("[");
     bool first = true;
     for (auto &point : points) {
         if (!first) result << "," << endl;
