@@ -1,10 +1,12 @@
 #include <iostream>
+#include <list>
 #include "InitialData.h"
 #include "EulersMethod.h"
 #include "FirstDerivativeX.h"
 #include "FirstDerivativeZ.h"
 #include "FirstDerivativeY.h"
 #include "RungeKuttaMethod.h"
+#include "ExportUtils.h"
 
 using namespace std;
 
@@ -31,11 +33,21 @@ int main() {
         pointsTableZ = RungeKuttaMethod::apply(firstDerivativeZ, initialData->getZ0(), initialData->getT0(),
                                                 initialData->getTFinal(), h);
     }
+    pointsTableX->setCoordName("x");
+    pointsTableY->setCoordName("y");
+    pointsTableZ->setCoordName("z");
     /*EulersMethod::apply(initialData->firstDerivativeX,
                                            initialData->getT0(),
                                            initialData->getTFinal(),
                                            h
     );*/
+
+    list<PointsTable*> result;
+    result.push_back(pointsTableX);
+    result.push_back(pointsTableY);
+    result.push_back(pointsTableZ);
+    ExportUtils::exportToCSV(result, "out.csv");
+
     cout << "X table" << endl;
     cout << pointsTableX->toString() << endl;
     cout << "Y table" << endl;

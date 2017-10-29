@@ -10,6 +10,11 @@ PointsTable::PointsTable() = default;
 
 PointsTable::PointsTable(map<double, double> points) : points(std::move(points)) {}
 
+PointsTable::PointsTable(const string &coordName) : coordName(coordName) {}
+
+PointsTable::PointsTable(const string &coordName, const map<double, double> &points) : coordName(coordName),
+                                                                                       points(points) {}
+
 const map<double, double> &PointsTable::getPoints() const {
     return points;
 }
@@ -49,8 +54,8 @@ void PointsTable::replacePoint(double x, double y) {
 
 string PointsTable::stringifyPoint(pair<double, double> point) {
     stringstream result;
-    result << string("{x:\'") << to_string(point.first)
-           << string("\', y:\'") << to_string(point.second) << "\'}";
+    result << string("{t:\'") << to_string(point.first)
+           << string("\', ") << coordName << string(":\'") << to_string(point.second) << "\'}";
     return result.str();
 }
 
@@ -69,8 +74,8 @@ string PointsTable::toString() {
 
 string PointsTable::pointToJson(pair<double, double> point) {
     stringstream result;
-    result << string(R"({"x":")") << to_string(point.first)
-           << string(R"(", "y":")") << to_string(point.second) << "\'}";
+    result << string(R"({"t":")") << to_string(point.first)
+           << string(R"(", ")") << coordName << string(R"(":")") << to_string(point.second) << "\'}";
     return result.str();
 }
 
@@ -85,5 +90,13 @@ string PointsTable::toJson() {
     }
     result << "]";
     return result.str();
+}
+
+const string &PointsTable::getCoordName() const {
+    return coordName;
+}
+
+void PointsTable::setCoordName(const string &coordName) {
+    PointsTable::coordName = coordName;
 }
 
