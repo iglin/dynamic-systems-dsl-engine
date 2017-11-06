@@ -14,6 +14,8 @@ using namespace std;
 class ExportUtils {
 public:
     static void exportToCSV(list<PointsTable*> results, string fileName);
+
+    static void graph(string fileName, PointsTable* pointsTable);
 };
 
 

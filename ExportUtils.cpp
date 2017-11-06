@@ -18,10 +18,14 @@ void ExportUtils::exportToCSV(list<PointsTable*> results, string fileName) {
             file << "," << endl;
         }
         file.close();
-    }
-    else {
+    } else {
         string errorMessage;
         errorMessage = "Could not write CSV report to file" + fileName;
         throw runtime_error(errorMessage);
     }
+}
+
+void ExportUtils::graph(string fileName, PointsTable *pointsTable) {
+    cout << "This is stub for graph export of solution: " << endl;
+    cout << pointsTable->toJson() << endl;
 }
