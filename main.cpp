@@ -10,28 +10,35 @@
 
 using namespace std;
 
+// TODO: move all the dynamically generated code somewhere else
 int main() {
+    InitialData::Interval intervals[2];
+    intervals[0] = InitialData::Interval(0, 1);
+    intervals[1] = InitialData::Interval(2, 4);
     auto *initialData = new InitialData();
     initialData->setX0(2);
     initialData->setY0(2);
     initialData->setZ0(2);
-    initialData->setT0(0);
-    initialData->setTFinal(1);
+    initialData->setIntervals(intervals);
+    initialData->setIntervalsCount(2);
     double h = 0.1;
 
-    auto firstDerivativeX = new FirstDerivativeX();
-    auto firstDerivativeY = new FirstDerivativeY();
-    auto firstDerivativeZ = new FirstDerivativeZ();
+    auto firstDerivativeX = new FirstDerivativeX(initialData);
+    auto firstDerivativeY = new FirstDerivativeY(initialData);
+    auto firstDerivativeZ = new FirstDerivativeZ(initialData);
 
     PointsTable *pointsTableX, *pointsTableY, *pointsTableZ;
-#pragma omp parallel
-    {
-        pointsTableX = EulersMethod::apply(firstDerivativeX, initialData->getX0(), initialData->getT0(),
-                                                initialData->getTFinal(), h);
-        pointsTableY = EulersMethod::apply(firstDerivativeY, initialData->getY0(), initialData->getT0(),
-                                                initialData->getTFinal(), h);
-        pointsTableZ = RungeKuttaMethod::apply(firstDerivativeZ, initialData->getZ0(), initialData->getT0(),
-                                                initialData->getTFinal(), h);
+#pragma omp parallel for
+    for (int i = 0; i <= initialData->getIntervalsCount(); ++i) {
+        pointsTableX = EulersMethod::apply(firstDerivativeX, initialData->getX0(), intervals[i].t0, intervals[i].tFinal, h);
+        pointsTableY = EulersMethod::apply(firstDerivativeY, initialData->getY0(), intervals[i].t0, intervals[i].tFinal, h);
+        pointsTableZ = RungeKuttaMethod::apply(firstDerivativeZ, initialData->getZ0(), intervals[i].t0, intervals[i].tFinal, h);
+
+        // save results somehow
+
+        delete [] pointsTableX;
+        delete pointsTableY;
+        delete [] pointsTableZ;
     }
     pointsTableX->setCoordName("x");
     pointsTableY->setCoordName("y");

@@ -25,6 +25,8 @@ public:
 
     PointsTable(const string &coordName, const map<double, double> &points);
 
+    virtual ~PointsTable();
+
     void clear();
 
     void addPoint(double x, double y);

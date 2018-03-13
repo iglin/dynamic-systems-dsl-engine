@@ -13,8 +13,10 @@
 
 InitialData::InitialData() = default;
 
-InitialData::InitialData(double x0, double y0, double z0, double t0, double tFinal)
-        : x0(x0), y0(y0), z0(z0), t0(t0), tFinal(tFinal) {}
+InitialData::InitialData(double x0, double y0, double z0) : x0(x0), y0(y0), z0(z0) {}
+
+InitialData::InitialData(double x0, double y0, double z0, InitialData::Interval *intervals, int intervalsCount) : x0(
+        x0), y0(y0), z0(z0), intervals(intervals), intervalsCount(intervalsCount) {}
 
 double InitialData::firstDerivativeX(double x, double t) {
 #if defined(dx)
@@ -64,19 +66,20 @@ void InitialData::setZ0(double z0) {
     InitialData::z0 = z0;
 }
 
-double InitialData::getT0() const {
-    return t0;
+InitialData::Interval *InitialData::getIntervals() const {
+    return intervals;
 }
 
-void InitialData::setT0(double t0) {
-    InitialData::t0 = t0;
+void InitialData::setIntervals(InitialData::Interval *intervals) {
+    InitialData::intervals = intervals;
 }
 
-double InitialData::getTFinal() const {
-    return tFinal;
+int InitialData::getIntervalsCount() const {
+    return intervalsCount;
 }
 
-void InitialData::setTFinal(double T) {
-    InitialData::tFinal = T;
+void InitialData::setIntervalsCount(int intervalsCount) {
+    InitialData::intervalsCount = intervalsCount;
 }
 
+InitialData::Interval::Interval(double t0, double tFinal) : t0(t0), tFinal(tFinal) {}

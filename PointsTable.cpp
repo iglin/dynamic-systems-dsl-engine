@@ -100,3 +100,8 @@ void PointsTable::setCoordName(const string &coordName) {
     PointsTable::coordName = coordName;
 }
 
+PointsTable::~PointsTable() {
+    for()
+    delete coordName;
+}
+

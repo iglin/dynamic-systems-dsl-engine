@@ -7,12 +7,23 @@
 
 
 class InitialData {
+public:
+    struct Interval {
+        double t0;
+        double tFinal;
+
+        Interval(double t0, double tFinal);
+    };
 private:
-    double x0, y0, z0, t0, tFinal;
+    double x0, y0, z0;
+    Interval *intervals;
+    int intervalsCount;
 public:
     InitialData();
 
-    InitialData(double x0, double y0, double z0, double t0, double tFinal);
+    InitialData(double x0, double y0, double z0);
+
+    InitialData(double x0, double y0, double z0, Interval *intervals, int intervalsCount);
 
     double firstDerivativeX(double x, double t);
 
@@ -28,17 +39,17 @@ public:
 
     void setZ0(double z0);
 
-    double getT0() const;
-
-    void setT0(double t0);
-
-    double getTFinal() const;
-
-    void setTFinal(double T);
-
     double getX0() const;
 
     void setX0(double x0);
+
+    Interval *getIntervals() const;
+
+    void setIntervals(Interval *intervals);
+
+    int getIntervalsCount() const;
+
+    void setIntervalsCount(int intervalsCount);
 };
 
 
