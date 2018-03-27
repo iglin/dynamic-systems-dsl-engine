@@ -7,8 +7,8 @@
 #include <stdexcept>
 
 #define dx (3 * sin(2 * x) + t)
-#define dy (3 * sin(2 * y) + t)
-#define dz (3 * sin(2 * z) + t)
+#define dy (4 * cos(2 * y) + pow(t, 7))
+#define dz (-3 * sin(2 * z) * sqrt(t))
 
 
 InitialData::InitialData() = default;
@@ -83,3 +83,5 @@ void InitialData::setIntervalsCount(int intervalsCount) {
 }
 
 InitialData::Interval::Interval(double t0, double tFinal) : t0(t0), tFinal(tFinal) {}
+
+InitialData::Interval::Interval() {}
