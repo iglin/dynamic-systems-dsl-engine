@@ -8,6 +8,6 @@ double FirstDerivativeX::calculate(double coord, double t) {
     return getInitialData()->firstDerivativeX(coord, t);
 }
 
-FirstDerivativeX::FirstDerivativeX() = default;
+FirstDerivativeX::FirstDerivativeX() {};
 
 FirstDerivativeX::FirstDerivativeX(InitialData *initialData) : FirstDerivative(initialData) {}

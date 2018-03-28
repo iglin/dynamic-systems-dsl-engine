@@ -7,7 +7,7 @@
 PointsTable *RungeKuttaMethod::apply(FirstDerivative *firstDerivative, double y0, double a, double b, double h) {
     double n = (b - a) / h;
     double xArray[(int) n];
-    auto table = new PointsTable();
+    PointsTable *table = new PointsTable();
 
     table->addPoint(a, y0);
     xArray[0] = a;

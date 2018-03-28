@@ -4,7 +4,7 @@
 
 #include "FirstDerivative.h"
 
-FirstDerivative::FirstDerivative() = default;
+FirstDerivative::FirstDerivative() {};
 
 FirstDerivative::FirstDerivative(InitialData *initialData) : initialData(initialData) {}
 

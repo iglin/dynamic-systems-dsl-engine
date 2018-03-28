@@ -9,8 +9,8 @@
 class InitialData {
 public:
     struct Interval {
-        double t0 = 0;
-        double tFinal = 1;
+        double t0;
+        double tFinal;
 
         Interval();
 

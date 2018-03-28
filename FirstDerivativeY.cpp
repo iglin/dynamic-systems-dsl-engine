@@ -10,4 +10,4 @@ double FirstDerivativeY::calculate(double coord, double t) {
 
 FirstDerivativeY::FirstDerivativeY(InitialData *initialData) : FirstDerivative(initialData) {}
 
-FirstDerivativeY::FirstDerivativeY() = default;
+FirstDerivativeY::FirstDerivativeY() {};

@@ -11,19 +11,15 @@ using namespace std;
 
 class PointsTable {
 private:
-    string coordName = string("x");
+    string *coordName;
     map<double, double> points;
-
-    string stringifyPoint(pair<double, double> point);
-    string pointToJson(pair<double, double> point);
+//
+//    string stringifyPoint(pair<double, double> point);
+//    string pointToJson(pair<double, double> point);
 public:
     PointsTable();
 
-    explicit PointsTable(map<double, double> points);
-
-    explicit PointsTable(const string &coordName);
-
-    PointsTable(const string &coordName, const map<double, double> &points);
+    PointsTable(string *coordName, const map<double, double> &points);
 
     virtual ~PointsTable();
 
@@ -35,7 +31,7 @@ public:
 
     double getY(double x);
 
-    double getX(double y);
+    //double getX(double y);
 
     void replacePoint(double x, double y);
 
@@ -43,13 +39,13 @@ public:
 
     void setPoints(const map<double, double> &points);
 
-    const string &getCoordName() const;
+    string *getCoordName() const;
 
-    void setCoordName(const string &coordName);
+    void setCoordName(string *coordName);
 
-    string toString();
+    //string toString();
 
-    string toJson();
+    //string toJson();
 };
 
 

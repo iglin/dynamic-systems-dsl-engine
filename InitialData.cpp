@@ -11,7 +11,7 @@
 #define dz (-3 * sin(2 * z) * sqrt(t))
 
 
-InitialData::InitialData() = default;
+InitialData::InitialData() {};
 
 InitialData::InitialData(double x0, double y0, double z0) : x0(x0), y0(y0), z0(z0) {}
 
@@ -84,4 +84,7 @@ void InitialData::setIntervalsCount(int intervalsCount) {
 
 InitialData::Interval::Interval(double t0, double tFinal) : t0(t0), tFinal(tFinal) {}
 
-InitialData::Interval::Interval() {}
+InitialData::Interval::Interval() {
+    t0 = 0;
+    tFinal = 1;
+}

@@ -10,4 +10,4 @@ double FirstDerivativeZ::calculate(double coord, double t) {
 
 FirstDerivativeZ::FirstDerivativeZ(InitialData *initialData) : FirstDerivative(initialData) {}
 
-FirstDerivativeZ::FirstDerivativeZ() = default;
+FirstDerivativeZ::FirstDerivativeZ() {};
