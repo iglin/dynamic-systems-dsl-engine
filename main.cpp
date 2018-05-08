@@ -7,6 +7,7 @@
 #include "FirstDerivativeY.h"
 #include "RungeKuttaMethod.h"
 #include "ExportUtils.h"
+#include "HeunsMethod.h"
 
 using namespace std;
 
@@ -34,8 +35,8 @@ int main() {
     for (int i = 0; i <= initialData->getIntervalsCount(); ++i) {
         PointsTable *pointsTableX, *pointsTableY, *pointsTableZ;
         pointsTableX = EulersMethod::apply(firstDerivativeX, initialData->getX0(), intervals[i].t0, intervals[i].tFinal, h);
-        pointsTableY = EulersMethod::apply(firstDerivativeY, initialData->getY0(), intervals[i].t0, intervals[i].tFinal, h);
-        pointsTableZ = RungeKuttaMethod::apply(firstDerivativeZ, initialData->getZ0(), intervals[i].t0, intervals[i].tFinal, h);
+        pointsTableY = RungeKuttaMethod::apply(firstDerivativeY, initialData->getY0(), intervals[i].t0, intervals[i].tFinal, h);
+        pointsTableZ = HeunsMethod::apply(firstDerivativeZ, initialData->getZ0(), intervals[i].t0, intervals[i].tFinal, h);
 
         delete pointsTableX;
         delete pointsTableY;
