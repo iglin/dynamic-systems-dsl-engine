@@ -5,6 +5,14 @@
 #ifndef DYNAMIC_SYSTEMS_DSL_INITIALDATA_H
 #define DYNAMIC_SYSTEMS_DSL_INITIALDATA_H
 
+#include <cmath>
+
+#define pi M_PI
+#define PI M_PI
+#define Pi M_PI
+#define pI M_PI
+#define e M_E
+#define E M_E
 
 class InitialData {
 public:

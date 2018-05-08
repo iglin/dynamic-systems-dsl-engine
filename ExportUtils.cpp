@@ -12,7 +12,7 @@ void ExportUtils::exportToCSV(list<PointsTable*> results, string fileName) {
         for (auto &result : results) {
             file << result->getCoordName() << "(t)" << endl;
             file << "t, " << result->getCoordName() << endl;
-            for (auto &point : result->getPoints()) {
+            for (auto &point : *result->getPoints()) {
                 file << point.first << ", " << point.second << endl;
             }
             file << "," << endl;

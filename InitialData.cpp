@@ -6,9 +6,9 @@
 #include <cmath>
 #include <stdexcept>
 
-#define dx (3 * sin(2 * x) + t)
-#define dy (4 * cos(2 * y) + pow(t, 7))
-#define dz (-3 * sin(2 * z) * sqrt(t))
+#define dx (3.547 * sin(-29.013 * x) + t)
+#define dy (0.0014 * cos(2.000012 * y + pi) + pow(t, -7))
+#define dz (-3 * log10(200131 - z) * sqrt(t - log2(pow(z, e))))
 
 
 InitialData::InitialData() = default;
