@@ -2,9 +2,6 @@
 #include <list>
 #include "InitialData.h"
 #include "EulersMethod.h"
-#include "FirstDerivativeX.h"
-#include "FirstDerivativeZ.h"
-#include "FirstDerivativeY.h"
 #include "RungeKuttaMethod.h"
 #include "ExportUtils.h"
 #include "HeunsMethod.h"
@@ -15,33 +12,26 @@ using namespace std;
 int main() {
     // artificially generating initial data
     auto *initialData = new InitialData();
-    initialData->setX0(2);
-    initialData->setY0(2);
-    initialData->setZ0(2);
-    const int intervalsCount = 500000;
-    initialData->setIntervalsCount(intervalsCount);
-    InitialData::Interval intervals[intervalsCount];
-    for (int i = 0; i < intervalsCount; i++) {
-        intervals[i] = InitialData::Interval(i, i + 7);
-    }
-    initialData->setIntervals(intervals);
-    double h = 0.1;
+    initialData->setX0(0.01);
+    initialData->setY0(0.01);
+    initialData->setT0(0.01);
+    initialData->setTFinal(1);
+    double h = 0.02;
 
-    auto firstDerivativeX = new FirstDerivativeX(initialData);
-    auto firstDerivativeY = new FirstDerivativeY(initialData);
-    auto firstDerivativeZ = new FirstDerivativeZ(initialData);
+    Result *result = RungeKuttaMethod().apply(initialData, h);
 
-#pragma omp parallel for
-    for (int i = 0; i <= initialData->getIntervalsCount(); ++i) {
-        PointsTable *pointsTableX, *pointsTableY, *pointsTableZ;
-        Result *result = EulersMethod::apply(initialData, h);
-        pointsTableY = RungeKuttaMethod::apply(firstDerivativeY, initialData->getY0(), intervals[i].t0, intervals[i].tFinal, h);
-        pointsTableZ = HeunsMethod::apply(firstDerivativeZ, initialData->getZ0(), intervals[i].t0, intervals[i].tFinal, h);
 
-        delete pointsTableX;
-        delete pointsTableY;
-        delete pointsTableZ;
-    }
+//#pragma omp parallel for
+//    for (int i = 0; i <= initialData->getIntervalsCount(); ++i) {
+//        PointsTable *pointsTableX, *pointsTableY, *pointsTableZ;
+//        Result *result = EulersMethod::apply(initialData, h);
+//        pointsTableY = RungeKuttaMethod::apply(firstDerivativeY, initialData->getY0(), intervals[i].t0, intervals[i].tFinal, h);
+//        pointsTableZ = HeunsMethod::apply(firstDerivativeZ, initialData->getZ0(), intervals[i].t0, intervals[i].tFinal, h);
+//
+//        delete pointsTableX;
+//        delete pointsTableY;
+//        delete pointsTableZ;
+//    }
 
 //    Export utils sample usage
 //    pointsTableX->setCoordName("x");
@@ -54,13 +44,12 @@ int main() {
 //    result.push_back(pointsTableZ);
 //    ExportUtils::exportToCSV(result, "out.csv");
 //
-//    cout << "X table" << endl;
-//    cout << pointsTableX->toString() << endl;
-//    cout << "Y table" << endl;
-//    cout << pointsTableY->toString() << endl;
-//    cout << "Z table" << endl;
-//    cout << pointsTableZ->toString() << endl;
-//    cout << pointsTableZ->toJson() << endl;
+    cout << "X table" << endl;
+    cout << result->getXTable()->toJson() << endl;
+    cout << "Y table" << endl;
+    cout << result->getYTable()->toJson() << endl;
+    cout << "Z table" << endl;
+    cout << result->getZTable()->toJson() << endl;
 
     return 0;
 }

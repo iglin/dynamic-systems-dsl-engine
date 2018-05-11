@@ -8,9 +8,9 @@
 #ifndef DYNAMIC_SYSTEMS_DSL_NUMERICALMETHOD_H
 #define DYNAMIC_SYSTEMS_DSL_NUMERICALMETHOD_H
 
-#endif //DYNAMIC_SYSTEMS_DSL_NUMERICALMETHOD_H
-
 class NumericalMethod {
 public:
     virtual Result *apply(InitialData *data, double h) = 0;
 };
+
+#endif //DYNAMIC_SYSTEMS_DSL_NUMERICALMETHOD_H

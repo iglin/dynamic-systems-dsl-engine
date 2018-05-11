@@ -7,7 +7,6 @@
 
 
 #include "PointsTable.h"
-#include "FirstDerivative.h"
 #include "Result.h"
 #include "NumericalMethod.h"
 

@@ -6,7 +6,6 @@
 #define DYNAMIC_SYSTEMS_DSL_RUNGEKUTTAMETHOD_H
 
 
-#include "FirstDerivative.h"
 #include "PointsTable.h"
 #include "NumericalMethod.h"
 

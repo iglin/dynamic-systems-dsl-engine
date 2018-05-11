@@ -7,6 +7,10 @@
 
 #include <cmath>
 
+#define dx ((-0.1 * x) + t)
+#define dy (0.1 * y + 0.7 * t)
+//#define dz (-3 * log10(200131 - z) * sqrt(t - log2(pow(z, e))))
+
 #define pi M_PI
 #define PI M_PI
 #define Pi M_PI
@@ -24,9 +28,15 @@ public:
 
     InitialData(double x0, double y0, double z0, double t0, double tFinal);
 
+    double firstDerivativeX(double x, double t);
+
     double firstDerivativeX(double x, double y, double z, double t);
 
+    double firstDerivativeY(double y, double t);
+
     double firstDerivativeY(double x, double y, double z, double t);
+
+    double firstDerivativeZ(double z, double t);
 
     double firstDerivativeZ(double x, double y, double z, double t);
 

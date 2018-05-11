@@ -11,13 +11,13 @@ using namespace std;
 Result *EulersMethod::apply(InitialData *initialData, double h) {
     int n = static_cast<int>(round((initialData->getTFinal() - initialData->getT0()) / h));
     double tArray[(int) n];
-    PointsTable *xTable = new PointsTable();
-    PointsTable *yTable = new PointsTable();
-    PointsTable *zTable = new PointsTable();
+    PointsTable *xTable = new PointsTable("x");
+    PointsTable *yTable = new PointsTable("y");
+    PointsTable *zTable = new PointsTable("z");
 
     xTable->addPoint(initialData->getT0(), initialData->getX0());
-    xTable->addPoint(initialData->getT0(), initialData->getY0());
-    xTable->addPoint(initialData->getT0(), initialData->getZ0());
+    yTable->addPoint(initialData->getT0(), initialData->getY0());
+    zTable->addPoint(initialData->getT0(), initialData->getZ0());
     tArray[0] = initialData->getT0();
     double value;
     for (int i = 1; i < n; i++) {

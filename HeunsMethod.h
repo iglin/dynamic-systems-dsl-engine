@@ -7,11 +7,12 @@
 
 
 #include "PointsTable.h"
-#include "FirstDerivative.h"
+#include "NumericalMethod.h"
 
-class HeunsMethod {
+class HeunsMethod : NumericalMethod {
 public:
-    static PointsTable *apply(FirstDerivative *firstDerivative, double y0, double a, double b, double h);
+private:
+    Result *apply(InitialData *data, double h) override;
 };
 
 

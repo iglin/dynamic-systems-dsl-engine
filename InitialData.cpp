@@ -6,17 +6,20 @@
 #include <cmath>
 #include <stdexcept>
 
-#define dx (3.547 * sin(-29.013 * x) + t)
-#define dy (0.0014 * cos(2.000012 * y + pi) + pow(t, -7))
-#define dz (-3 * log10(200131 - z) * sqrt(t - log2(pow(z, e))))
-
-
 InitialData::InitialData() = default;
 
 InitialData::InitialData(double x0, double y0, double z0) : x0(x0), y0(y0), z0(z0) {}
 
 InitialData::InitialData(double x0, double y0, double z0, double t0, double tFinal) : x0(x0), y0(y0), z0(z0), t0(t0),
                                                                                       tFinal(tFinal) {}
+
+double InitialData::firstDerivativeX(double x, double t) {
+#if defined(dx)
+    return dx;
+#else
+    throw std::invalid_argument( "dx/dt is not defined!" );
+#endif
+}
 
 double InitialData::firstDerivativeX(double x, double y, double z, double t) {
 #if defined(dx)
@@ -26,11 +29,27 @@ double InitialData::firstDerivativeX(double x, double y, double z, double t) {
 #endif
 }
 
+double InitialData::firstDerivativeY(double y, double t) {
+#if defined(dy)
+    return dy;
+#else
+    throw std::invalid_argument( "dy/dt is not defined!" );
+#endif
+}
+
 double InitialData::firstDerivativeY(double x, double y, double z, double t) {
 #if defined(dy)
     return dy;
 #else
     throw std::invalid_argument( "dy/dt is not defined!" );
+#endif
+}
+
+double InitialData::firstDerivativeZ(double z, double t) {
+#if defined(dz)
+    return dz;
+#else
+    throw std::invalid_argument( "dz/dt is not defined!" );
 #endif
 }
 
