@@ -4,8 +4,8 @@
 
 #include "FirstDerivativeX.h"
 
-double FirstDerivativeX::calculate(double coord, double t) {
-    return getInitialData()->firstDerivativeX(coord, t);
+double FirstDerivativeX::calculate(double x, double y, double z, double t) {
+    return getInitialData()->firstDerivativeX(x, y, z, t);
 }
 
 FirstDerivativeX::FirstDerivativeX() = default;

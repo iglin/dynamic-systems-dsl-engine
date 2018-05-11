@@ -34,7 +34,7 @@ int main() {
 #pragma omp parallel for
     for (int i = 0; i <= initialData->getIntervalsCount(); ++i) {
         PointsTable *pointsTableX, *pointsTableY, *pointsTableZ;
-        pointsTableX = EulersMethod::apply(firstDerivativeX, initialData->getX0(), intervals[i].t0, intervals[i].tFinal, h);
+        Result *result = EulersMethod::apply(initialData, h);
         pointsTableY = RungeKuttaMethod::apply(firstDerivativeY, initialData->getY0(), intervals[i].t0, intervals[i].tFinal, h);
         pointsTableZ = HeunsMethod::apply(firstDerivativeZ, initialData->getZ0(), intervals[i].t0, intervals[i].tFinal, h);
 

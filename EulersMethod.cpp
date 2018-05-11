@@ -4,39 +4,36 @@
 
 #include <cstdlib>
 #include "EulersMethod.h"
+#include "Result.h"
 
 using namespace std;
 
-/* Through method ref, doesn't work
-static PointsTable *EulersMethod::apply(double (*firstDerivative)(double, double), double a, double b, double h) {
-//static PointsTable *EulersMethod::apply(double &firstDerivative(double, double), double a, double b, double h) {
-    double n = (b - a) / h;
-    double xArray[(int) n];
-    auto table = new PointsTable();
+Result *EulersMethod::apply(InitialData *initialData, double h) {
+    int n = static_cast<int>(round((initialData->getTFinal() - initialData->getT0()) / h));
+    double tArray[(int) n];
+    PointsTable *xTable = new PointsTable();
+    PointsTable *yTable = new PointsTable();
+    PointsTable *zTable = new PointsTable();
 
-
-    table->addPoint(a, y0);
-    //xArray[0] = a; yArray[0] = y0;
-    for (int i = 1; i <= n; i++) {
-        xArray[i] = a + i * h;
-        double y = table->getY(xArray[i - 1]) + h * (*firstDerivative)(xArray[i - 1], table->getY(xArray[i - 1]));
-        table->addPoint(xArray[i], y);
+    xTable->addPoint(initialData->getT0(), initialData->getX0());
+    xTable->addPoint(initialData->getT0(), initialData->getY0());
+    xTable->addPoint(initialData->getT0(), initialData->getZ0());
+    tArray[0] = initialData->getT0();
+    double value;
+    for (int i = 1; i < n; i++) {
+        tArray[i] = tArray[i - 1] + h;
+        value = xTable->getY(tArray[i - 1]) + h
+                * initialData->firstDerivativeX(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]),
+                                              tArray[i - 1]);
+        xTable->addPoint(tArray[i], value);
+        value = yTable->getY(tArray[i - 1]) + h
+                * initialData->firstDerivativeY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]),
+                                              tArray[i - 1]);
+        yTable->addPoint(tArray[i], value);
+        value = zTable->getY(tArray[i - 1]) + h
+                * initialData->firstDerivativeZ(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]),
+                                              tArray[i - 1]);
+        zTable->addPoint(tArray[i], value);
     }
-    return table;
-}*/
-
-PointsTable *EulersMethod::apply(FirstDerivative *firstDerivative, double y0, double a, double b, double h) {
-    double n = (b - a) / h;
-    double xArray[(int) n];
-    PointsTable *table = new PointsTable();
-
-    table->addPoint(a, y0);
-    xArray[0] = a;
-    double y;
-    for (int i = 1; i <= n; i++) {
-        xArray[i] = xArray[i - 1] + h;
-        y = table->getY(xArray[i - 1]) + h * firstDerivative->calculate(xArray[i - 1], table->getY(xArray[i - 1]));
-        table->addPoint(xArray[i], y);
-    }
-    return table;
+    return new Result(xTable, yTable, zTable);
 }

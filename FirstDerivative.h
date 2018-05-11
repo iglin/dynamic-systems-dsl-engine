@@ -12,7 +12,7 @@ class FirstDerivative {
 private:
     InitialData *initialData;
 public:
-    virtual double calculate(double coord, double t)= 0;
+    virtual double calculate(double x, double y, double z, double t)= 0;
 
     explicit FirstDerivative(InitialData *initialData);
 

@@ -15,31 +15,20 @@
 #define E M_E
 
 class InitialData {
-public:
-    struct Interval {
-        double t0 = 0;
-        double tFinal = 1;
-
-        Interval();
-
-        Interval(double t0, double tFinal);
-    };
 private:
-    double x0, y0, z0;
-    Interval *intervals;
-    int intervalsCount;
+    double x0, y0, z0, t0, tFinal;
 public:
     InitialData();
 
     InitialData(double x0, double y0, double z0);
 
-    InitialData(double x0, double y0, double z0, Interval *intervals, int intervalsCount);
+    InitialData(double x0, double y0, double z0, double t0, double tFinal);
 
-    double firstDerivativeX(double x, double t);
+    double firstDerivativeX(double x, double y, double z, double t);
 
-    double firstDerivativeY(double y, double t);
+    double firstDerivativeY(double x, double y, double z, double t);
 
-    double firstDerivativeZ(double z, double t);
+    double firstDerivativeZ(double x, double y, double z, double t);
 
     double getY0() const;
 
@@ -53,13 +42,13 @@ public:
 
     void setX0(double x0);
 
-    Interval *getIntervals() const;
+    double getT0() const;
 
-    void setIntervals(Interval *intervals);
+    void setT0(double t0);
 
-    int getIntervalsCount() const;
+    double getTFinal() const;
 
-    void setIntervalsCount(int intervalsCount);
+    void setTFinal(double tFinal);
 };
 
 

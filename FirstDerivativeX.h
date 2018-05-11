@@ -9,7 +9,7 @@
 #include "FirstDerivative.h"
 
 class FirstDerivativeX : public FirstDerivative {
-    double calculate(double coord, double t) override;
+    double calculate(double x, double y, double z, double t) override;
 
 public:
     explicit FirstDerivativeX(InitialData *initialData);

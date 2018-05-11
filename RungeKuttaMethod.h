@@ -8,10 +8,11 @@
 
 #include "FirstDerivative.h"
 #include "PointsTable.h"
+#include "NumericalMethod.h"
 
-class RungeKuttaMethod {
+class RungeKuttaMethod : public NumericalMethod {
 public:
-    static PointsTable *apply(FirstDerivative *firstDerivative, double y0, double a, double b, double h);
+    Result *apply(InitialData *data, double h) override;
 };
 
 

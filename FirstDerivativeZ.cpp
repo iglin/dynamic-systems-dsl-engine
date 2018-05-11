@@ -4,8 +4,8 @@
 
 #include "FirstDerivativeZ.h"
 
-double FirstDerivativeZ::calculate(double coord, double t) {
-    return getInitialData()->firstDerivativeZ(coord, t);
+double FirstDerivativeZ::calculate(double x, double y, double z, double t) {
+    return getInitialData()->firstDerivativeZ(x, y, z, t);
 }
 
 FirstDerivativeZ::FirstDerivativeZ(InitialData *initialData) : FirstDerivative(initialData) {}

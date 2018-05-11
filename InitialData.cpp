@@ -15,10 +15,10 @@ InitialData::InitialData() = default;
 
 InitialData::InitialData(double x0, double y0, double z0) : x0(x0), y0(y0), z0(z0) {}
 
-InitialData::InitialData(double x0, double y0, double z0, InitialData::Interval *intervals, int intervalsCount) : x0(
-        x0), y0(y0), z0(z0), intervals(intervals), intervalsCount(intervalsCount) {}
+InitialData::InitialData(double x0, double y0, double z0, double t0, double tFinal) : x0(x0), y0(y0), z0(z0), t0(t0),
+                                                                                      tFinal(tFinal) {}
 
-double InitialData::firstDerivativeX(double x, double t) {
+double InitialData::firstDerivativeX(double x, double y, double z, double t) {
 #if defined(dx)
     return dx;
 #else
@@ -26,7 +26,7 @@ double InitialData::firstDerivativeX(double x, double t) {
 #endif
 }
 
-double InitialData::firstDerivativeY(double y, double t) {
+double InitialData::firstDerivativeY(double x, double y, double z, double t) {
 #if defined(dy)
     return dy;
 #else
@@ -34,7 +34,7 @@ double InitialData::firstDerivativeY(double y, double t) {
 #endif
 }
 
-double InitialData::firstDerivativeZ(double z, double t) {
+double InitialData::firstDerivativeZ(double x, double y, double z, double t) {
 #if defined(dz)
     return dz;
 #else
@@ -66,22 +66,18 @@ void InitialData::setZ0(double z0) {
     InitialData::z0 = z0;
 }
 
-InitialData::Interval *InitialData::getIntervals() const {
-    return intervals;
+double InitialData::getT0() const {
+    return t0;
 }
 
-void InitialData::setIntervals(InitialData::Interval *intervals) {
-    InitialData::intervals = intervals;
+void InitialData::setT0(double t0) {
+    InitialData::t0 = t0;
 }
 
-int InitialData::getIntervalsCount() const {
-    return intervalsCount;
+double InitialData::getTFinal() const {
+    return tFinal;
 }
 
-void InitialData::setIntervalsCount(int intervalsCount) {
-    InitialData::intervalsCount = intervalsCount;
+void InitialData::setTFinal(double tFinal) {
+    InitialData::tFinal = tFinal;
 }
-
-InitialData::Interval::Interval(double t0, double tFinal) : t0(t0), tFinal(tFinal) {}
-
-InitialData::Interval::Interval() {}
