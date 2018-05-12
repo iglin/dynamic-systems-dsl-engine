@@ -44,6 +44,7 @@ void ExportUtils::graph(string fileName, PointsTable *pointsTable) {
             file << *buffer << endl;
         }
         footerFile.close();
+        delete buffer;
         file.close();
     } else {
         string errorMessage;

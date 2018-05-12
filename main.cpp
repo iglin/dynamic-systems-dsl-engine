@@ -14,11 +14,11 @@ int main() {
     auto *initialData = new InitialData();
     initialData->setX0(0.011);
     initialData->setY0(0.011);
-    initialData->setT0(-10);
+    initialData->setT0(0);
     initialData->setTFinal(10);
-    double h = 0.002;
+    double h = 0.02;
 
-    Result *result = RungeKuttaMethod().apply(initialData, h);
+    Result *result = EulersMethod().apply(initialData, h);
 
 
 
