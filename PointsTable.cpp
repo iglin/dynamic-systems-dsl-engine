@@ -68,7 +68,7 @@ string PointsTable::toString() {
 string PointsTable::pointToJson(pair<double, double> point) {
     stringstream result;
     result << string(R"({"t":")") << to_string(point.first)
-           << string(R"(", ")") << coordName << string(R"(":")") << to_string(point.second) << "\'}";
+           << string(R"(", ")") << coordName << string(R"(":")") << to_string(point.second) << "\"}";
     return result.str();
 }
 

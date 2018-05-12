@@ -18,7 +18,7 @@ int main() {
     initialData->setTFinal(1);
     double h = 0.02;
 
-    Result *result = EulersMethod().apply(initialData, h);
+    Result *result = RungeKuttaMethod().apply(initialData, h);
 
 
 //#pragma omp parallel for

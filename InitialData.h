@@ -7,8 +7,8 @@
 
 #include <cmath>
 
-#define dx ((-0.1 * x) + t)
-#define dy (0.1 * y + 0.7 * t)
+#define dx (0.5 * x + 0.1 * y + u)
+#define dy (-0.1 * x + 0.1 * y + 0.7 * u)
 //#define dz (-3 * log10(200131 - z) * sqrt(t - log2(pow(z, e))))
 
 #define pi M_PI
