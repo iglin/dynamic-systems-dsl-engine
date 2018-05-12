@@ -18,7 +18,7 @@ int main() {
     initialData->setTFinal(1);
     double h = 0.02;
 
-    Result *result = RungeKuttaMethod().apply(initialData, h);
+    Result *result = EulersMethod().apply(initialData, h);
 
 
 //#pragma omp parallel for
@@ -50,6 +50,8 @@ int main() {
     cout << result->getYTable()->toJson() << endl;
     cout << "Z table" << endl;
     cout << result->getZTable()->toJson() << endl;
+    cout << "XY phase portrait" << endl;
+    cout << result->getXYPhasePortrait()->toJson() << endl;
 
     return 0;
 }

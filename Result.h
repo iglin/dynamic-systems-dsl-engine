@@ -14,6 +14,9 @@ private:
     PointsTable *yTable;
     PointsTable *zTable;
 
+    PointsTable *xyPhasePortrait = nullptr;
+    PointsTable *xzPhasePortrait = nullptr;
+    PointsTable *yzPhasePortrait = nullptr;
 public:
     Result();
 
@@ -30,6 +33,12 @@ public:
     PointsTable *getZTable() const;
 
     void setZTable(PointsTable *zTable);
+
+    PointsTable *getXYPhasePortrait();
+
+    PointsTable *getXZPhasePortrait();
+
+    PointsTable *getYZPhasePortrait();
 };
 
 

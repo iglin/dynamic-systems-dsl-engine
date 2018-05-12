@@ -32,3 +32,14 @@ Result::Result(PointsTable *xTable, PointsTable *yTable, PointsTable *zTable) : 
                                                                                 zTable(zTable) {}
 
 Result::Result() {}
+
+PointsTable *Result::getXYPhasePortrait() {
+    if (xyPhasePortrait == nullptr) {
+        xyPhasePortrait = new PointsTable("y");
+        for (std::map<double, double>::iterator it = xTable->getPoints()->begin();
+             it != xTable->getPoints()->end(); ++it) {
+            xyPhasePortrait->addPoint(it->second, yTable->getY(it->first));
+        }
+    }
+    return xyPhasePortrait;
+}

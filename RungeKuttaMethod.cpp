@@ -23,14 +23,10 @@ Result *RungeKuttaMethod::apply(InitialData *data, double h) {
 #endif
     tArray[0] = data->getT0();
     double k1, k2, k3, k4, value;
-#pragma omp parallel for reduction(sum:)
     for (int i = 1; i < n; i++) {
         tArray[i] = tArray[i - 1] + h;
 
-        cout << "tArray[i - 1] = " << tArray[i - 1] << "tArray[i] = " << tArray[i] << "; i = " << i << endl;
 #if defined(dx)
-        cout << "table: " << xTable->toJson() << endl;
-        cout << "point: " << xTable->getY(tArray[i - 1]) << endl;
         k1 = data->firstDerivativeX(xTable->getY(tArray[i - 1]), tArray[i - 1]);
         k2 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
         k3 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
@@ -39,18 +35,18 @@ Result *RungeKuttaMethod::apply(InitialData *data, double h) {
         xTable->addPoint(tArray[i], value);
 #endif
 #if defined(dy)
-        k1 = data->firstDerivativeX(yTable->getY(tArray[i - 1]), tArray[i - 1]);
-        k2 = data->firstDerivativeX(yTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
-        k3 = data->firstDerivativeX(yTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
-        k4 = data->firstDerivativeX(yTable->getY(tArray[i - 1]) + h * k3, tArray[i - 1] + h);
+        k1 = data->firstDerivativeY(yTable->getY(tArray[i - 1]), tArray[i - 1]);
+        k2 = data->firstDerivativeY(yTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
+        k3 = data->firstDerivativeY(yTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
+        k4 = data->firstDerivativeY(yTable->getY(tArray[i - 1]) + h * k3, tArray[i - 1] + h);
         value = yTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
         yTable->addPoint(tArray[i], value);
 #endif
 #if defined(dz)
-        k1 = data->firstDerivativeX(zTable->getY(tArray[i - 1]), tArray[i - 1]);
-        k2 = data->firstDerivativeX(zTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
-        k3 = data->firstDerivativeX(zTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
-        k4 = data->firstDerivativeX(zTable->getY(tArray[i - 1]) + h * k3, tArray[i - 1] + h);
+        k1 = data->firstDerivativeZ(zTable->getY(tArray[i - 1]), tArray[i - 1]);
+        k2 = data->firstDerivativeZ(zTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
+        k3 = data->firstDerivativeZ(zTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
+        k4 = data->firstDerivativeZ(zTable->getY(tArray[i - 1]) + h * k3, tArray[i - 1] + h);
         value = zTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
         zTable->addPoint(tArray[i], value);
 #endif
