@@ -26,6 +26,28 @@ void ExportUtils::exportToCSV(list<PointsTable*> results, string fileName) {
 }
 
 void ExportUtils::graph(string fileName, PointsTable *pointsTable) {
-    cout << "This is stub for graph export of solution: " << endl;
-    cout << pointsTable->toJson() << endl;
+    ofstream file(fileName);
+    if (file.is_open()) {
+        string *buffer = new string();
+        ifstream headerFile(CHART_PAGE_HEADER);
+        if (!headerFile.is_open()) throw runtime_error("Could not make chart");
+        while(std::getline(headerFile, *buffer)) {
+            file << *buffer << endl;
+        }
+        headerFile.close();
+
+        file << pointsTable->toJson() << endl;
+
+        ifstream footerFile(CHART_PAGE_FOOTER);
+        if (!footerFile.is_open()) throw runtime_error("Could not make chart");
+        while(std::getline(footerFile, *buffer)) {
+            file << *buffer << endl;
+        }
+        footerFile.close();
+        file.close();
+    } else {
+        string errorMessage;
+        errorMessage = "Could not write chart to file" + fileName;
+        throw runtime_error(errorMessage);
+    }
 }

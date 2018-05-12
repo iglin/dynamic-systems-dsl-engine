@@ -15,6 +15,17 @@ InitialData::InitialData(double x0, double y0, double z0, double t0, double tFin
 
 double InitialData::firstDerivativeX(double x, double t) {
 #if defined(dx)
+    double y = 0;
+    double z = 0;
+    return dx;
+#else
+    throw std::invalid_argument( "dx/dt is not defined!" );
+#endif
+}
+
+double InitialData::firstDerivativeX(double x, double y, double t) {
+#if defined(dx)
+    double z = 0;
     return dx;
 #else
     throw std::invalid_argument( "dx/dt is not defined!" );
@@ -31,6 +42,17 @@ double InitialData::firstDerivativeX(double x, double y, double z, double t) {
 
 double InitialData::firstDerivativeY(double y, double t) {
 #if defined(dy)
+    double x = 0;
+    double z = 0;
+    return dy;
+#else
+    throw std::invalid_argument( "dy/dt is not defined!" );
+#endif
+}
+
+double InitialData::firstDerivativeY(double x, double y, double t) {
+#if defined(dy)
+    double z = 0;
     return dy;
 #else
     throw std::invalid_argument( "dy/dt is not defined!" );
@@ -47,6 +69,8 @@ double InitialData::firstDerivativeY(double x, double y, double z, double t) {
 
 double InitialData::firstDerivativeZ(double z, double t) {
 #if defined(dz)
+    double x = 0;
+    double y = 0;
     return dz;
 #else
     throw std::invalid_argument( "dz/dt is not defined!" );

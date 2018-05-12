@@ -12,11 +12,11 @@ using namespace std;
 int main() {
     // artificially generating initial data
     auto *initialData = new InitialData();
-    initialData->setX0(0.01);
-    initialData->setY0(0.01);
-    initialData->setT0(0.01);
-    initialData->setTFinal(1);
-    double h = 0.02;
+    initialData->setX0(0.011);
+    initialData->setY0(0.011);
+    initialData->setT0(0);
+    initialData->setTFinal(50);
+    double h = 0.1;
 
     Result *result = RungeKuttaMethod().apply(initialData, h);
 
@@ -44,14 +44,16 @@ int main() {
 //    result.push_back(pointsTableZ);
 //    ExportUtils::exportToCSV(result, "out.csv");
 //
-    cout << "X table" << endl;
-    cout << result->getXTable()->toJson() << endl;
-    cout << "Y table" << endl;
-    cout << result->getYTable()->toJson() << endl;
-    cout << "Z table" << endl;
-    cout << result->getZTable()->toJson() << endl;
-    cout << "XY phase portrait" << endl;
+
+//    cout << "X table" << endl;
+//    cout << result->getXTable()->toJson() << endl;
+//    cout << "Y table" << endl;
+//    cout << result->getYTable()->toJson() << endl;
+//    cout << "Z table" << endl;
+//    cout << result->getZTable()->toJson() << endl;
+//    cout << "XY phase portrait" << endl;
     cout << result->getXYPhasePortrait()->toJson() << endl;
+    ExportUtils::graph("out.html", result->getXYPhasePortrait());
 
     return 0;
 }

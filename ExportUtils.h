@@ -11,6 +11,9 @@
 
 using namespace std;
 
+static const string CHART_PAGE_HEADER = "../resources/amcharts.header.html";
+static const string CHART_PAGE_FOOTER = "../resources/amcharts.footer.html";
+
 class ExportUtils {
 public:
     static void exportToCSV(list<PointsTable*> results, string fileName);

@@ -7,8 +7,8 @@
 
 #include <cmath>
 
-#define dx (0.5 * x + 0.1 * y + u)
-#define dy (-0.1 * x + 0.1 * y + 0.7 * u)
+#define dx (0.5 * x + 0.1 * y)
+#define dy (-0.1 * x + 0.1 * y)
 //#define dz (-3 * log10(200131 - z) * sqrt(t - log2(pow(z, e))))
 
 #define pi M_PI
@@ -30,9 +30,13 @@ public:
 
     double firstDerivativeX(double x, double t);
 
+    double firstDerivativeX(double x, double y, double t);
+
     double firstDerivativeX(double x, double y, double z, double t);
 
     double firstDerivativeY(double y, double t);
+    \
+    double firstDerivativeY(double x, double y, double t);
 
     double firstDerivativeY(double x, double y, double z, double t);
 

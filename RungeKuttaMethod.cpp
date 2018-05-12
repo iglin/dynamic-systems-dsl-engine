@@ -27,6 +27,44 @@ Result *RungeKuttaMethod::apply(InitialData *data, double h) {
         tArray[i] = tArray[i - 1] + h;
 
 #if defined(dx)
+#if defined(dy)
+#if defined(dz)
+        k1 = data->firstDerivativeX(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]), tArray[i - 1]);
+        k2 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + (h / 2) * k1, yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]), tArray[i - 1] + h / 2);
+        k3 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + (h / 2) * k2, yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]), tArray[i - 1] + h / 2);
+        k4 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + h * k3, yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]), tArray[i - 1] + h);
+        value = xTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+        xTable->addPoint(tArray[i], value);
+
+        k1 = data->firstDerivativeY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]), tArray[i - 1]);
+        k2 = data->firstDerivativeY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]) + (h / 2) * k1, zTable->getY(tArray[i - 1]), tArray[i - 1] + h / 2);
+        k3 = data->firstDerivativeY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]) + (h / 2) * k2, zTable->getY(tArray[i - 1]), tArray[i - 1] + h / 2);
+        k4 = data->firstDerivativeY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]) + h * k3, zTable->getY(tArray[i - 1]), tArray[i - 1] + h);
+        value = yTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+        yTable->addPoint(tArray[i], value);
+
+        k1 = data->firstDerivativeZ(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]), tArray[i - 1]);
+        k2 = data->firstDerivativeZ(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
+        k3 = data->firstDerivativeZ(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
+        k4 = data->firstDerivativeZ(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), zTable->getY(tArray[i - 1]) + h * k3, tArray[i - 1] + h);
+        value = zTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+        zTable->addPoint(tArray[i], value);
+#else
+        k1 = data->firstDerivativeX(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), tArray[i - 1]);
+        k2 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + (h / 2) * k1, yTable->getY(tArray[i - 1]), tArray[i - 1] + h / 2);
+        k3 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + (h / 2) * k2, yTable->getY(tArray[i - 1]), tArray[i - 1] + h / 2);
+        k4 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + h * k3, yTable->getY(tArray[i - 1]), tArray[i - 1] + h);
+        value = xTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+        xTable->addPoint(tArray[i], value);
+
+        k1 = data->firstDerivativeY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), tArray[i - 1]);
+        k2 = data->firstDerivativeY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
+        k3 = data->firstDerivativeY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
+        k4 = data->firstDerivativeY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]) + h * k3, tArray[i - 1] + h);
+        value = yTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+        yTable->addPoint(tArray[i], value);
+#endif
+#else
         k1 = data->firstDerivativeX(xTable->getY(tArray[i - 1]), tArray[i - 1]);
         k2 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
         k3 = data->firstDerivativeX(xTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
@@ -34,22 +72,7 @@ Result *RungeKuttaMethod::apply(InitialData *data, double h) {
         value = xTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
         xTable->addPoint(tArray[i], value);
 #endif
-#if defined(dy)
-        k1 = data->firstDerivativeY(yTable->getY(tArray[i - 1]), tArray[i - 1]);
-        k2 = data->firstDerivativeY(yTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
-        k3 = data->firstDerivativeY(yTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
-        k4 = data->firstDerivativeY(yTable->getY(tArray[i - 1]) + h * k3, tArray[i - 1] + h);
-        value = yTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
-        yTable->addPoint(tArray[i], value);
 #endif
-#if defined(dz)
-        k1 = data->firstDerivativeZ(zTable->getY(tArray[i - 1]), tArray[i - 1]);
-        k2 = data->firstDerivativeZ(zTable->getY(tArray[i - 1]) + (h / 2) * k1, tArray[i - 1] + h / 2);
-        k3 = data->firstDerivativeZ(zTable->getY(tArray[i - 1]) + (h / 2) * k2, tArray[i - 1] + h / 2);
-        k4 = data->firstDerivativeZ(zTable->getY(tArray[i - 1]) + h * k3, tArray[i - 1] + h);
-        value = zTable->getY(tArray[i - 1]) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
-        zTable->addPoint(tArray[i], value);
-#endif
-    }
+        }
     return new Result(xTable, yTable, zTable);
 }
