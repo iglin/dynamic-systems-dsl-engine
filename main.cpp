@@ -14,24 +14,13 @@ int main() {
     auto *initialData = new InitialData();
     initialData->setX0(0.011);
     initialData->setY0(0.011);
-    initialData->setT0(0);
-    initialData->setTFinal(50);
-    double h = 0.1;
+    initialData->setT0(-10);
+    initialData->setTFinal(10);
+    double h = 0.002;
 
     Result *result = RungeKuttaMethod().apply(initialData, h);
 
 
-//#pragma omp parallel for
-//    for (int i = 0; i <= initialData->getIntervalsCount(); ++i) {
-//        PointsTable *pointsTableX, *pointsTableY, *pointsTableZ;
-//        Result *result = EulersMethod::apply(initialData, h);
-//        pointsTableY = RungeKuttaMethod::apply(firstDerivativeY, initialData->getY0(), intervals[i].t0, intervals[i].tFinal, h);
-//        pointsTableZ = HeunsMethod::apply(firstDerivativeZ, initialData->getZ0(), intervals[i].t0, intervals[i].tFinal, h);
-//
-//        delete pointsTableX;
-//        delete pointsTableY;
-//        delete pointsTableZ;
-//    }
 
 //    Export utils sample usage
 //    pointsTableX->setCoordName("x");
@@ -45,15 +34,10 @@ int main() {
 //    ExportUtils::exportToCSV(result, "out.csv");
 //
 
-//    cout << "X table" << endl;
-//    cout << result->getXTable()->toJson() << endl;
-//    cout << "Y table" << endl;
-//    cout << result->getYTable()->toJson() << endl;
-//    cout << "Z table" << endl;
-//    cout << result->getZTable()->toJson() << endl;
-//    cout << "XY phase portrait" << endl;
-    cout << result->getXYPhasePortrait()->toJson() << endl;
-    ExportUtils::graph("out.html", result->getXYPhasePortrait());
+    ExportUtils::graph("xy.html", result->getXYPhasePortrait());
+    result->getXTable()->setCoordName("y");
+    ExportUtils::graph("x.html", result->getXTable());
+    ExportUtils::graph("y.html", result->getYTable());
 
     return 0;
 }
