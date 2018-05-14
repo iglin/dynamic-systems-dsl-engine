@@ -14,6 +14,8 @@ public:
     Result *applyPolynomical(InitialData *initialData, double H, int M);
 
     Result *applyRational(InitialData *initialData, double H, int M);
+
+    Result *applyRationalParallel(InitialData *initialData, double H);
 };
 
 

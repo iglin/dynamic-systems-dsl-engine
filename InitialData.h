@@ -11,12 +11,6 @@
 #define dy (pow(y, 5) + (tan(M_PI + 4 * y) + 1 / (1 - sin(t * M_PI / 2))) / (exp(t)))
 //#define dz (-3 * log10(200131 - z) * sqrt(t - log2(pow(z, e))))
 
-#define pi M_PI
-#define PI M_PI
-#define Pi M_PI
-#define pI M_PI
-#define e M_E
-#define E M_E
 
 class InitialData {
 private:

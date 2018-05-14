@@ -4,6 +4,8 @@
 
 #include "Extrapolation.h"
 #include "RungeKuttaMethod.h"
+#include "EulersMethod.h"
+#include "taskbag.h"
 
 /*
  * H - base step, M - extrapolation order
@@ -91,10 +93,10 @@ Result *Extrapolation::applyRational(InitialData *initialData, double H, int M) 
 
         for (int r = 0; r <= M; r++) {
             Tx[r][0] = 0;
-            Tx[r][1] = RungeKuttaMethod().calculateNextX(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), 0,
+            Tx[r][1] = EulersMethod().calculateNextX(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), 0,
                                                          tArray[i - 1], h[r]);
             Ty[r][0] = 0;
-            Ty[r][1] = RungeKuttaMethod().calculateNextY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), 0,
+            Ty[r][1] = EulersMethod().calculateNextY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), 0,
                                                          tArray[i - 1], h[r]);
         }
 
@@ -116,5 +118,25 @@ Result *Extrapolation::applyRational(InitialData *initialData, double H, int M) 
         }
         yTable->addPoint(tArray[i], Ty[0][M]);
     }
+    return new Result(xTable, yTable, zTable);
+}
+
+Result *Extrapolation::applyRationalParallel(InitialData *initialData, double H) {
+    Taskbag().runTempletEngine(initialData, H);
+    int n = static_cast<int>(round((initialData->getTFinal() - initialData->getT0()) / H));
+    PointsTable *xTable = new PointsTable("x");
+    PointsTable *yTable = new PointsTable("y");
+    PointsTable *zTable = new PointsTable("z");
+#if defined(dx)
+    xTable->addPoint(initialData->getT0(), initialData->getX0());
+#endif
+#if defined(dy)
+    yTable->addPoint(initialData->getT0(), initialData->getY0());
+#endif
+#if defined(dz)
+    zTable->addPoint(initialData->getT0(), initialData->getZ0());
+#endif
+    double *tArray = new double [n];
+    tArray[0] = initialData->getT0();
     return new Result(xTable, yTable, zTable);
 }

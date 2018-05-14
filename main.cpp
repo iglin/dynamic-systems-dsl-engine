@@ -20,7 +20,7 @@ int main() {
     initialData->setTFinal(10);
     double h = 0.0002;
 
-    Result *result = Extrapolation().applyRational(initialData, h, 4);
+    Result *result = Extrapolation().applyRationalParallel(initialData, h);
 
 
 //    Export utils sample usage
