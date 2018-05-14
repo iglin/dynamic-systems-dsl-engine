@@ -153,7 +153,7 @@ Result *Taskbag::runTempletEngine(InitialData *initialData, double hBase)
     X_TABLE = new PointsTable();
     Y_TABLE = new PointsTable("y");
     X_TABLE->addPoint(T_ARRAY[0], iDATA->getX0());
-    X_TABLE->addPoint(T_ARRAY[0], iDATA->getY0());
+    Y_TABLE->addPoint(T_ARRAY[0], iDATA->getY0());
     H = new double [M + 1];
     TET_TX = new double *[M + 1];
     TET_TY = new double *[M + 1];
