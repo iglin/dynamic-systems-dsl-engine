@@ -124,3 +124,27 @@ double InitialData::getTFinal() const {
 void InitialData::setTFinal(double tFinal) {
     InitialData::tFinal = tFinal;
 }
+
+double InitialData::derivativeX(double x, double y, double z, double t) {
+#if defined(dx)
+    return dx;
+#else
+    throw std::invalid_argument( "dx/dt is not defined!" );
+#endif
+}
+
+double InitialData::derivativeY(double x, double y, double z, double t) {
+#if defined(dy)
+    return dy;
+#else
+    throw std::invalid_argument( "dy/dt is not defined!" );
+#endif
+}
+
+double InitialData::derivativeZ(double x, double y, double z, double t) {
+#if defined(dz)
+    return dz;
+#else
+    throw std::invalid_argument( "dz/dt is not defined!" );
+#endif
+}

@@ -62,3 +62,15 @@ Result *EulersMethod::apply(InitialData *initialData, double h) {
     }
     return new Result(xTable, yTable, zTable);
 }
+
+double EulersMethod::calculateNextX(double xPrev, double yPrev, double zPrev, double tPrev, double h) {
+    return xPrev + h * InitialData::derivativeX(xPrev, yPrev, zPrev, tPrev);
+}
+
+double EulersMethod::calculateNextY(double xPrev, double yPrev, double zPrev, double tPrev, double h) {
+    return yPrev + h * InitialData::derivativeY(xPrev, yPrev, zPrev, tPrev);
+}
+
+double EulersMethod::calculateNextZ(double xPrev, double yPrev, double zPrev, double tPrev, double h) {
+    return zPrev + h * InitialData::derivativeZ(xPrev, yPrev, zPrev, tPrev);
+}

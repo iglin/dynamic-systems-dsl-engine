@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD 17)
 
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fopenmp")
 
-set(SOURCE_FILES main.cpp EulersMethod.cpp EulersMethod.h InitialData.cpp InitialData.h PointsTable.cpp PointsTable.h RungeKuttaMethod.cpp RungeKuttaMethod.h ExportUtils.cpp ExportUtils.h HeunsMethod.cpp HeunsMethod.h Result.cpp Result.h NumericalMethod.h)
+set(SOURCE_FILES main.cpp EulersMethod.cpp EulersMethod.h InitialData.cpp InitialData.h PointsTable.cpp PointsTable.h RungeKuttaMethod.cpp RungeKuttaMethod.h ExportUtils.cpp ExportUtils.h HeunsMethod.cpp HeunsMethod.h Result.cpp Result.h NumericalMethod.h SimpsonsMethod.cpp SimpsonsMethod.h Extrapolation.cpp Extrapolation.h)
 add_executable(dynamic_systems_dsl ${SOURCE_FILES})

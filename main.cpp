@@ -5,6 +5,8 @@
 #include "RungeKuttaMethod.h"
 #include "ExportUtils.h"
 #include "HeunsMethod.h"
+#include "SimpsonsMethod.h"
+#include "Extrapolation.h"
 
 using namespace std;
 
@@ -18,8 +20,7 @@ int main() {
     initialData->setTFinal(10);
     double h = 0.02;
 
-    Result *result = EulersMethod().apply(initialData, h);
-
+    Result *result = Extrapolation().applyRational(initialData, h, 4);
 
 
 //    Export utils sample usage

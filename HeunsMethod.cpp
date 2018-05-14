@@ -4,7 +4,7 @@
 
 #include "HeunsMethod.h"
 
-//PointsTable *HeunsMethod::apply(FirstDerivative *firstDerivative, double y0, double a, double b, double h) {
+//PointsTable *HeunsMethod::applyPolynomical(FirstDerivative *firstDerivative, double y0, double a, double b, double h) {
 //    double n = (b - a) / h;
 //    double xArray[(int) n];
 //    PointsTable *table = new PointsTable();
