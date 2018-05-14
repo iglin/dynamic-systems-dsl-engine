@@ -122,21 +122,5 @@ Result *Extrapolation::applyRational(InitialData *initialData, double H, int M) 
 }
 
 Result *Extrapolation::applyRationalParallel(InitialData *initialData, double H) {
-    Taskbag().runTempletEngine(initialData, H);
-    int n = static_cast<int>(round((initialData->getTFinal() - initialData->getT0()) / H));
-    PointsTable *xTable = new PointsTable("x");
-    PointsTable *yTable = new PointsTable("y");
-    PointsTable *zTable = new PointsTable("z");
-#if defined(dx)
-    xTable->addPoint(initialData->getT0(), initialData->getX0());
-#endif
-#if defined(dy)
-    yTable->addPoint(initialData->getT0(), initialData->getY0());
-#endif
-#if defined(dz)
-    zTable->addPoint(initialData->getT0(), initialData->getZ0());
-#endif
-    double *tArray = new double [n];
-    tArray[0] = initialData->getT0();
-    return new Result(xTable, yTable, zTable);
+    return Taskbag().runTempletEngine(initialData, H);
 }

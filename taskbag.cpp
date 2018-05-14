@@ -142,12 +142,18 @@ struct pong : actor{
 /*$TET$*/
 };
 
-int Taskbag::runTempletEngine(InitialData *initialData, double hBase)
+Result *Taskbag::runTempletEngine(InitialData *initialData, double hBase)
 {
     my_engine e(0, nullptr);
 /*$TET$footer*/
     iDATA = initialData;
     int n = static_cast<int>(round((iDATA->getTFinal() - iDATA->getT0()) / hBase));
+    T_ARRAY = new double[n];
+    T_ARRAY[0] = iDATA->getT0();
+    X_TABLE = new PointsTable();
+    Y_TABLE = new PointsTable("y");
+    X_TABLE->addPoint(T_ARRAY[0], iDATA->getX0());
+    X_TABLE->addPoint(T_ARRAY[0], iDATA->getY0());
     H = new double [M + 1];
     TET_TX = new double *[M + 1];
     TET_TY = new double *[M + 1];
@@ -163,5 +169,6 @@ int Taskbag::runTempletEngine(InitialData *initialData, double hBase)
     a_pong.p(a_ping.p);
 
     e.run();
+    return new Result(nullptr, nullptr, nullptr);
 /*$TET$*/
 }

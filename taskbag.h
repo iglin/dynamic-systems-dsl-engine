@@ -8,11 +8,12 @@
 
 #include "InitialData.h"
 #include "templet.hpp"
+#include "Result.h"
 
 
 class Taskbag {
 public:
-    int runTempletEngine(InitialData *initialData, double hBase);
+    Result *runTempletEngine(InitialData *initialData, double hBase);
 private:
     const int PROC_NUM = 16;
     const int M = PROC_NUM / 2;
@@ -21,6 +22,8 @@ private:
     double **TET_TX = nullptr;
     double **TET_TY = nullptr;
     InitialData *iDATA = nullptr;
+    PointsTable *X_TABLE;
+    PointsTable *Y_TABLE;
 };
 
 #endif //DYNAMIC_SYSTEMS_DSL_TASKBAG_H
