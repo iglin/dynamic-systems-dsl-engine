@@ -76,3 +76,27 @@ Result *RungeKuttaMethod::apply(InitialData *data, double h) {
         }
     return new Result(xTable, yTable, zTable);
 }
+
+double RungeKuttaMethod::calculateNextX(double xPrev, double yPrev, double zPrev, double tPrev, double h) {
+    double k1 = InitialData::derivativeX(xPrev, yPrev, zPrev, tPrev);
+    double k2 = InitialData::derivativeX(xPrev + (h / 2) * k1, yPrev, zPrev, tPrev + h / 2);
+    double k3 = InitialData::derivativeX(xPrev + (h / 2) * k2, yPrev, zPrev, tPrev + h / 2);
+    double k4 = InitialData::derivativeX(xPrev + h * k3, yPrev, zPrev, tPrev + h);
+    return xPrev + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+}
+
+double RungeKuttaMethod::calculateNextY(double xPrev, double yPrev, double zPrev, double tPrev, double h) {
+    double k1 = InitialData::derivativeY(xPrev, yPrev, zPrev, tPrev);
+    double k2 = InitialData::derivativeY(xPrev, yPrev + (h / 2) * k1, zPrev, tPrev + h / 2);
+    double k3 = InitialData::derivativeY(xPrev, yPrev + (h / 2) * k2, zPrev, tPrev + h / 2);
+    double k4 = InitialData::derivativeY(xPrev, yPrev + h * k3, zPrev, tPrev + h);
+    return yPrev + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+}
+
+double RungeKuttaMethod::calculateNextZ(double xPrev, double yPrev, double zPrev, double tPrev, double h) {
+    double k1 = InitialData::derivativeZ(xPrev, yPrev, zPrev, tPrev);
+    double k2 = InitialData::derivativeZ(xPrev, yPrev, zPrev + (h / 2) * k1, tPrev + h / 2);
+    double k3 = InitialData::derivativeZ(xPrev, yPrev, zPrev + (h / 2) * k2, tPrev + h / 2);
+    double k4 = InitialData::derivativeZ(xPrev, yPrev, zPrev + h * k3, tPrev + h);
+    return zPrev + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+}

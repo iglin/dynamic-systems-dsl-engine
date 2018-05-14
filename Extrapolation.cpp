@@ -3,6 +3,7 @@
 //
 
 #include "Extrapolation.h"
+#include "RungeKuttaMethod.h"
 
 /*
  * H - base step, M - extrapolation order
@@ -74,7 +75,7 @@ Result *Extrapolation::applyRational(InitialData *initialData, double H, int M) 
 #if defined(dz)
     zTable->addPoint(initialData->getT0(), initialData->getZ0());
 #endif
-    double tArray[n];
+    double *tArray = new double [n];
     tArray[0] = initialData->getT0();
     double **Tx = new double *[M + 1];
     double **Ty = new double *[M + 1];
@@ -90,11 +91,11 @@ Result *Extrapolation::applyRational(InitialData *initialData, double H, int M) 
 
         for (int r = 0; r <= M; r++) {
             Tx[r][0] = 0;
-            Tx[r][1] = tArray[i - 1] + h[r] * initialData->firstDerivativeX(xTable->getY(tArray[i - 1]),
-                                                                            yTable->getY(tArray[i - 1]), tArray[i - 1]);
+            Tx[r][1] = RungeKuttaMethod().calculateNextX(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), 0,
+                                                         tArray[i - 1], h[r]);
             Ty[r][0] = 0;
-            Ty[r][1] = tArray[i - 1] + h[r] * initialData->firstDerivativeY(xTable->getY(tArray[i - 1]),
-                                                                            yTable->getY(tArray[i - 1]), tArray[i - 1]);
+            Ty[r][1] = RungeKuttaMethod().calculateNextY(xTable->getY(tArray[i - 1]), yTable->getY(tArray[i - 1]), 0,
+                                                         tArray[i - 1], h[r]);
         }
 
         for (int s = 1; s <= M; s++) {

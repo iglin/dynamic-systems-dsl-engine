@@ -7,8 +7,8 @@
 
 #include <cmath>
 
-#define dx (sin(t))
-#define dy (3 * t * t)
+#define dx (pow(sin(t * x), 4.0123) - 5.092 * sqrt(-x + 99.23))
+#define dy (pow(y, 5) + (tan(M_PI + 4 * y) + 1 / (1 - sin(t * M_PI / 2))) / (exp(t)))
 //#define dz (-3 * log10(200131 - z) * sqrt(t - log2(pow(z, e))))
 
 #define pi M_PI

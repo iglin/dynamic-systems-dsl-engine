@@ -18,7 +18,7 @@ int main() {
     initialData->setY0(0.011);
     initialData->setT0(0);
     initialData->setTFinal(10);
-    double h = 0.02;
+    double h = 0.0002;
 
     Result *result = Extrapolation().applyRational(initialData, h, 4);
 
@@ -35,10 +35,10 @@ int main() {
 //    ExportUtils::exportToCSV(result, "out.csv");
 //
 
-    ExportUtils::graph("xy.html", result->getXYPhasePortrait());
-    result->getXTable()->setCoordName("y");
-    ExportUtils::graph("x.html", result->getXTable());
-    ExportUtils::graph("y.html", result->getYTable());
+//    ExportUtils::graph("xy.html", result->getXYPhasePortrait());
+//    result->getXTable()->setCoordName("y");
+//    ExportUtils::graph("x.html", result->getXTable());
+//    ExportUtils::graph("y.html", result->getYTable());
 
     return 0;
 }

@@ -12,6 +12,12 @@
 class RungeKuttaMethod : public NumericalMethod {
 public:
     Result *apply(InitialData *data, double h) override;
+
+    double calculateNextX(double xPrev, double yPrev, double zPrev, double tPrev, double h) override;
+
+    double calculateNextY(double xPrev, double yPrev, double zPrev, double tPrev, double h) override;
+
+    double calculateNextZ(double xPrev, double yPrev, double zPrev, double tPrev, double h) override;
 };
 
 
