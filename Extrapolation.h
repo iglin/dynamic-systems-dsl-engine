@@ -12,9 +12,11 @@
 
 class Extrapolation {
 public:
-    Result *applyPolynomical(InitialData *initialData, double H, int M);
+    Result *applyPolynomical(NumericalMethod *method, InitialData *initialData, double H, int M);
 
-    Result *applyRational(InitialData *initialData, double H, int M);
+    Result *applyRational(NumericalMethod *method, InitialData *initialData, double H, int M);
+
+    Result *applyRationalOMP(NumericalMethod *method, InitialData *initialData, double H, int M);
 
     Result *applyRationalParallel(NumericalMethod *method, InitialData *initialData, double H);
 };

@@ -19,7 +19,7 @@ Result *SimpsonsMethod::apply(InitialData *data, double h) {
     yTable->addPoint(data->getT0(), data->getY0());
 #endif
 #if defined(dz)
-    zTable->addPoint(initialData->getT0(), initialData->getZ0());
+    zTable->addPoint(data->getT0(), data->getZ0());
 #endif
 
     tArray[0] = data->getT0();

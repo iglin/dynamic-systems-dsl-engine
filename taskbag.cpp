@@ -25,6 +25,12 @@ using namespace std;
 Taskbag *AC;
 atomic<int> R{0};
 atomic<int> i{1};
+
+void refresh() {
+    R = 0;
+    i = 1;
+}
+
 int nextR() {
     return R++;
 }
@@ -212,6 +218,7 @@ struct producer : actor{
             } else {
                 AC->X_TABLE->addPoint(AC->T_ARRAY[i], AC->TX[0][M]);
                 AC->Y_TABLE->addPoint(AC->T_ARRAY[i], AC->TY[0][M]);
+                AC->Z_TABLE->addPoint(AC->T_ARRAY[i], AC->TZ[0][M]);
                 if (i == AC->N - 1) stop();
                 else {
                     i++;
@@ -272,12 +279,17 @@ struct consumer : actor{
             AC->TX[r][0] = 0;
             AC->TX[r][1] = AC->METHOD->calculateNextX(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
                                                       AC->Y_TABLE->getY(AC->T_ARRAY[i - 1]),
-                                                      0,
+                                                      AC->Z_TABLE->getY(AC->T_ARRAY[i - 1]),
                                                       AC->T_ARRAY[i - 1], AC->H[r]);
             AC->TY[r][0] = 0;
             AC->TY[r][1] = AC->METHOD->calculateNextY(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
                                                       AC->Y_TABLE->getY(AC->T_ARRAY[i - 1]),
-                                                      0,
+                                                      AC->Z_TABLE->getY(AC->T_ARRAY[i - 1]),
+                                                      AC->T_ARRAY[i - 1], AC->H[r]);
+            AC->TZ[r][0] = 0;
+            AC->TZ[r][1] = AC->METHOD->calculateNextZ(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
+                                                      AC->Y_TABLE->getY(AC->T_ARRAY[i - 1]),
+                                                      AC->Z_TABLE->getY(AC->T_ARRAY[i - 1]),
                                                       AC->T_ARRAY[i - 1], AC->H[r]);
         } else {
             AC->TX[r][s + 1] = AC->TX[r + 1][s] + (AC->TX[r + 1][s] - AC->TX[r][s])
@@ -287,12 +299,17 @@ struct consumer : actor{
             AC->TY[r][s + 1] = AC->TY[r + 1][s] + (AC->TY[r + 1][s] - AC->TY[r][s])
                                                   / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TY[r + 1][s] - AC->TY[r][s])
                                                                                        / (AC->TY[r + 1][s] - AC->TY[r + 1][s - 1]))) - 1);
+
+            AC->TZ[r][s + 1] = AC->TZ[r + 1][s] + (AC->TZ[r + 1][s] - AC->TZ[r][s])
+                                                  / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TZ[r + 1][s] - AC->TZ[r][s])
+                                                                                       / (AC->TZ[r + 1][s] - AC->TZ[r + 1][s - 1]))) - 1);
         };
     }
 /*$TET$*/
 };
 
 Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase) {
+    refresh();
     my_engine e(0, nullptr);
 /*$TET$footer*/
     AC = this;
@@ -303,16 +320,20 @@ Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialD
     T_ARRAY[0] = iDATA->getT0();
     X_TABLE = new PointsTable();
     Y_TABLE = new PointsTable("y");
+    Z_TABLE = new PointsTable("z");
     X_TABLE->addPoint(T_ARRAY[0], iDATA->getX0());
     Y_TABLE->addPoint(T_ARRAY[0], iDATA->getY0());
+    Z_TABLE->addPoint(T_ARRAY[0], iDATA->getY0());
     H_BASE = hBase;
     H = new double [M + 1];
     TX = new double *[M + 1];
     TY = new double *[M + 1];
+    TZ = new double *[M + 1];
     for (int r = 0; r <= M; r++) {
         H[r] = hBase / pow(2, r + 1);
         TX[r] = new double [M + 2];
         TY[r] = new double [M + 2];
+        TZ[r] = new double [M + 2];
     }
 
     producer a_producer(e);
@@ -332,6 +353,6 @@ Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialD
 
     e.run();
 
-    return new Result(X_TABLE, Y_TABLE, nullptr);
+    return new Result(X_TABLE, Y_TABLE, Z_TABLE);
 /*$TET$*/
 }

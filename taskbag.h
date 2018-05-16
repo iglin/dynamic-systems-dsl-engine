@@ -25,9 +25,11 @@ public:
     double H_BASE;
     double **TX;
     double **TY;
+    double **TZ;
     InitialData *iDATA;
     PointsTable *X_TABLE;
     PointsTable *Y_TABLE;
+    PointsTable *Z_TABLE;
     NumericalMethod *METHOD;
 };
 

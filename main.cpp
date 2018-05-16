@@ -17,18 +17,30 @@ int main() {
     auto *initialData = new InitialData();
     initialData->setX0(0.011);
     initialData->setY0(0.011);
+    initialData->setZ0(0.011);
     initialData->setT0(0);
-    initialData->setTFinal(100);
+    initialData->setTFinal(20);
     double h = 0.0002;
 
-    double t1 = omp_get_wtime(), t2;
-    Result *result = Extrapolation().applyRational(initialData, h, 8);
-    t2 = omp_get_wtime();
-    cout << t2 - t1 << endl;
-    t1 = omp_get_wtime();
-    result = Extrapolation().applyRationalParallel(new EulersMethod(), initialData, h);
-    t2 = omp_get_wtime();
-    cout << t2 - t1 << endl;
+    double t1, t2;
+    for (int i = 0; i < 5; i++) {
+        t1 = omp_get_wtime();
+        Result *result = Extrapolation().applyRational(new RungeKuttaMethod(), initialData, h, 8);
+        t2 = omp_get_wtime();
+        cout << "Seq, " << t2 - t1 << endl;
+    }
+//    for (int i = 0; i < 5; i++) {
+//        t1 = omp_get_wtime();
+//        Result *result = Extrapolation().applyRationalOMP(new RungeKuttaMethod(), initialData, h, 8);
+//        t2 = omp_get_wtime();
+//        cout << "OMP, " << t2 - t1 << endl;
+//    }
+    for (int i = 0; i < 5; i++) {
+        t1 = omp_get_wtime();
+        Result *result = Extrapolation().applyRationalParallel(new RungeKuttaMethod(), initialData, h);
+        t2 = omp_get_wtime();
+        cout << "Templet, " << t2 - t1 << endl;
+    }
 
 
 //    Export utils sample usage
