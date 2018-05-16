@@ -63,12 +63,12 @@ struct mes : message{
     int _server_id;
 };
 
-#pragma templet *producer(p!mes)+
+#pragma templet *producer(p0!mes,p1!mes,p2!mes,p3!mes,p4!mes,p5!mes,p6!mes,p7!mes)+
 
 struct producer : actor{
-    enum tag{START,TAG_p};
+    enum tag{START,TAG_p0,TAG_p1,TAG_p2,TAG_p3,TAG_p4,TAG_p5,TAG_p6,TAG_p7};
 
-    producer(my_engine&e):p(this, &e, TAG_p){
+    producer(my_engine&e):p0(this, &e, TAG_p0),p1(this, &e, TAG_p1),p2(this, &e, TAG_p2),p3(this, &e, TAG_p3),p4(this, &e, TAG_p4),p5(this, &e, TAG_p5),p6(this, &e, TAG_p6),p7(this, &e, TAG_p7){
         ::init(this, &e, producer_recv_adapter);
         ::init(&_start, this, &e);
         ::send(&_start, this, START);
@@ -84,33 +84,131 @@ struct producer : actor{
     double time(){ return TEMPLET::time(this); }
     void stop(){ TEMPLET::stop(this); }
 
-    mes p;
+    mes p0;
+    mes p1;
+    mes p2;
+    mes p3;
+    mes p4;
+    mes p5;
+    mes p6;
+    mes p7;
 
     static void producer_recv_adapter (actor*a, message*m, int tag){
         switch(tag){
-            case TAG_p: ((producer*)a)->p_handler(*((mes*)m)); break;
+            case TAG_p0: ((producer*)a)->p0_handler(*((mes*)m)); break;
+            case TAG_p1: ((producer*)a)->p1_handler(*((mes*)m)); break;
+            case TAG_p2: ((producer*)a)->p2_handler(*((mes*)m)); break;
+            case TAG_p3: ((producer*)a)->p3_handler(*((mes*)m)); break;
+            case TAG_p4: ((producer*)a)->p4_handler(*((mes*)m)); break;
+            case TAG_p5: ((producer*)a)->p5_handler(*((mes*)m)); break;
+            case TAG_p6: ((producer*)a)->p6_handler(*((mes*)m)); break;
+            case TAG_p7: ((producer*)a)->p7_handler(*((mes*)m)); break;
             case START: ((producer*)a)->start(); break;
         }
     }
 
     void start(){
 /*$TET$producer$start*/
-        p._mes = 0;
-        cout << "Producer is sending message : " << p._mes << endl;
-        p.send();
+        p0._mes = 0;
+        p1._mes = 0;
+        p2._mes = 0;
+        p3._mes = 0;
+        p4._mes = 0;
+        p5._mes = 0;
+        p6._mes = 0;
+        p7._mes = 0;
+        //cout << "Producer is sending message : " << p0._mes << endl;
+        p0.send();
+        p1.send();
+        p2.send();
+        p3.send();
+        p4.send();
+        p5.send();
+        p6.send();
+        p7.send();
 /*$TET$*/
     }
 
-    void p_handler(mes&m){
-/*$TET$producer$p*/
+    void p0_handler(mes&m){
+/*$TET$producer$p0*/
+        produce(m, p0);
+/*$TET$*/
+    }
+
+    void p1_handler(mes&m){
+/*$TET$producer$p1*/
+        produce(m, p1);
+/*$TET$*/
+    }
+
+    void p2_handler(mes&m){
+/*$TET$producer$p2*/
+        produce(m, p2);
+/*$TET$*/
+    }
+
+    void p3_handler(mes&m){
+/*$TET$producer$p3*/
+        produce(m, p3);
+/*$TET$*/
+    }
+
+    void p4_handler(mes&m){
+/*$TET$producer$p4*/
+        produce(m, p4);
+/*$TET$*/
+    }
+
+    void p5_handler(mes&m){
+/*$TET$producer$p5*/
+        produce(m, p5);
+/*$TET$*/
+    }
+
+    void p6_handler(mes&m){
+/*$TET$producer$p6*/
+        produce(m, p6);
+/*$TET$*/
+    }
+
+    void p7_handler(mes&m){
+/*$TET$producer$p7*/
+        produce(m, p7);
+/*$TET$*/
+    }
+
+/*$TET$producer$$code&data*/
+    atomic<int> consumersFinished{0};
+    atomic<int> s{0};
+
+    bool sendToAll(int value) {
+        p0._mes = s;
+        p0.send();
+        p1._mes = s;
+        p1.send();
+        p2._mes = s;
+        p2.send();
+        p3._mes = s;
+        p3.send();
+        p4._mes = s;
+        p4.send();
+        p5._mes = s;
+        p5.send();
+        p6._mes = s;
+        p6.send();
+        p7._mes = s;
+        p7.send();
+    }
+
+    bool produce(mes&m, mes &port) {
         consumersFinished++;
-        cout << "Got response from consumer " << m._mes;
-        stop();
+        //cout << "Got response from consumer " << m._mes << endl;
+//        cout << "Finished " << consumersFinished << " consumers" << endl;
         if (consumersFinished >= PROC_NUM) {
+            consumersFinished = 0;
             if (s < M) {
                 s++;
-                p._mes = s;
-                p.send();
+                sendToAll(s);
             } else {
                 AC->X_TABLE->addPoint(AC->T_ARRAY[i], AC->TX[0][M]);
                 AC->Y_TABLE->addPoint(AC->T_ARRAY[i], AC->TY[0][M]);
@@ -119,17 +217,11 @@ struct producer : actor{
                     i++;
                     AC->T_ARRAY[i] = AC->T_ARRAY[i - 1] + AC->H_BASE;
                     s = 0;
-                    p._mes = s;
-                    p.send();
+                    sendToAll(s);
                 }
             }
         }
-/*$TET$*/
     }
-
-/*$TET$producer$$code&data*/
-    atomic<int> consumersFinished{0};
-    atomic<int> s{0};
 /*$TET$*/
     message _start;
 };
@@ -164,7 +256,7 @@ struct consumer : actor{
 
     void p_handler(mes&m){
 /*$TET$consumer$p*/
-        cout << "Got from producer s = " << m._mes << endl;
+        //cout << "Got from producer s = " << m._mes << endl;
         if (r <= M - m._mes) calculate(m._mes);
         m._mes = r; // my order number
         m.send();
@@ -175,26 +267,26 @@ struct consumer : actor{
     int r;
 
     bool calculate(int s) {
-        cout << "Consumer " << r << " is calculating s = " << s <<endl;
+        //cout << "Consumer " << r << " is calculating s = " << s <<endl;
         if (s == 0) {
             AC->TX[r][0] = 0;
             AC->TX[r][1] = AC->METHOD->calculateNextX(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
-                                                             AC->Y_TABLE->getY(AC->T_ARRAY[i - 1]),
-                                                             0,
-                                                             AC->T_ARRAY[i - 1], AC->H[r]);
+                                                      AC->Y_TABLE->getY(AC->T_ARRAY[i - 1]),
+                                                      0,
+                                                      AC->T_ARRAY[i - 1], AC->H[r]);
             AC->TY[r][0] = 0;
             AC->TY[r][1] = AC->METHOD->calculateNextY(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
-                                                             AC->Y_TABLE->getY(AC->T_ARRAY[i - 1]),
-                                                             0,
-                                                             AC->T_ARRAY[i - 1], AC->H[r]);
+                                                      AC->Y_TABLE->getY(AC->T_ARRAY[i - 1]),
+                                                      0,
+                                                      AC->T_ARRAY[i - 1], AC->H[r]);
         } else {
             AC->TX[r][s + 1] = AC->TX[r + 1][s] + (AC->TX[r + 1][s] - AC->TX[r][s])
-                                                          / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TX[r + 1][s] - AC->TX[r][s])
-                                                                                               / (AC->TX[r + 1][s] - AC->TX[r + 1][s - 1]))) - 1);
+                                                  / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TX[r + 1][s] - AC->TX[r][s])
+                                                                                       / (AC->TX[r + 1][s] - AC->TX[r + 1][s - 1]))) - 1);
 
             AC->TY[r][s + 1] = AC->TY[r + 1][s] + (AC->TY[r + 1][s] - AC->TY[r][s])
-                                                          / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TY[r + 1][s] - AC->TY[r][s])
-                                                                                               / (AC->TY[r + 1][s] - AC->TY[r + 1][s - 1]))) - 1);
+                                                  / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TY[r + 1][s] - AC->TY[r][s])
+                                                                                       / (AC->TY[r + 1][s] - AC->TY[r + 1][s - 1]))) - 1);
         };
     }
 /*$TET$*/
@@ -227,8 +319,16 @@ Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialD
     consumer **consumers = new consumer *[PROC_NUM];
     for (int i = 0; i < PROC_NUM; i++) {
         consumers[i] = new consumer(e);
-        consumers[i]->p(a_producer.p);
+        //        consumers[i]->p(a_producer.p);
     }
+    consumers[0]->p(a_producer.p0);
+    consumers[1]->p(a_producer.p1);
+    consumers[2]->p(a_producer.p2);
+    consumers[3]->p(a_producer.p3);
+    consumers[4]->p(a_producer.p4);
+    consumers[5]->p(a_producer.p5);
+    consumers[6]->p(a_producer.p6);
+    consumers[7]->p(a_producer.p7);
 
     e.run();
 
