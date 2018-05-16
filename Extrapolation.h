@@ -8,6 +8,7 @@
 
 #include "Result.h"
 #include "InitialData.h"
+#include "NumericalMethod.h"
 
 class Extrapolation {
 public:
@@ -15,7 +16,7 @@ public:
 
     Result *applyRational(InitialData *initialData, double H, int M);
 
-    Result *applyRationalParallel(InitialData *initialData, double H);
+    Result *applyRationalParallel(NumericalMethod *method, InitialData *initialData, double H);
 };
 
 

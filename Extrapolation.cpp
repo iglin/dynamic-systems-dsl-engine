@@ -121,6 +121,6 @@ Result *Extrapolation::applyRational(InitialData *initialData, double H, int M) 
     return new Result(xTable, yTable, zTable);
 }
 
-Result *Extrapolation::applyRationalParallel(InitialData *initialData, double H) {
-    return Taskbag().runTempletEngine(initialData, H);
+Result *Extrapolation::applyRationalParallel(NumericalMethod *method, InitialData *initialData, double H) {
+    return Taskbag().runTempletEngine(method, initialData, H);
 }

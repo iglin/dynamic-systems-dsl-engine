@@ -106,14 +106,14 @@ struct producer : actor{
         consumersFinished++;
         cout << "Got response from consumer " << m._mes;
         stop();
-        if (consumersFinished >= AC->PROC_NUM) {
-            if (s < AC->M) {
+        if (consumersFinished >= PROC_NUM) {
+            if (s < M) {
                 s++;
                 p._mes = s;
                 p.send();
             } else {
-                AC->X_TABLE->addPoint(AC->T_ARRAY[i], AC->TET_TX[0][AC->M]);
-                AC->Y_TABLE->addPoint(AC->T_ARRAY[i], AC->TET_TY[0][AC->M]);
+                AC->X_TABLE->addPoint(AC->T_ARRAY[i], AC->TX[0][M]);
+                AC->Y_TABLE->addPoint(AC->T_ARRAY[i], AC->TY[0][M]);
                 if (i == AC->N - 1) stop();
                 else {
                     i++;
@@ -165,7 +165,7 @@ struct consumer : actor{
     void p_handler(mes&m){
 /*$TET$consumer$p*/
         cout << "Got from producer s = " << m._mes << endl;
-        if (r <= AC->M - m._mes) calculate(m._mes);
+        if (r <= M - m._mes) calculate(m._mes);
         m._mes = r; // my order number
         m.send();
 /*$TET$*/
@@ -177,34 +177,34 @@ struct consumer : actor{
     bool calculate(int s) {
         cout << "Consumer " << r << " is calculating s = " << s <<endl;
         if (s == 0) {
-            AC->TET_TX[r][0] = 0;
-            AC->TET_TX[r][1] = EulersMethod().calculateNextX(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
+            AC->TX[r][0] = 0;
+            AC->TX[r][1] = AC->METHOD->calculateNextX(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
                                                              AC->Y_TABLE->getY(AC->T_ARRAY[i - 1]),
                                                              0,
                                                              AC->T_ARRAY[i - 1], AC->H[r]);
-            AC->TET_TY[r][0] = 0;
-            AC->TET_TY[r][1] = EulersMethod().calculateNextY(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
+            AC->TY[r][0] = 0;
+            AC->TY[r][1] = AC->METHOD->calculateNextY(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
                                                              AC->Y_TABLE->getY(AC->T_ARRAY[i - 1]),
                                                              0,
                                                              AC->T_ARRAY[i - 1], AC->H[r]);
         } else {
-            AC->TET_TX[r][s + 1] = AC->TET_TX[r + 1][s] + (AC->TET_TX[r + 1][s] - AC->TET_TX[r][s])
-                                                          / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TET_TX[r + 1][s] - AC->TET_TX[r][s])
-                                                                                               / (AC->TET_TX[r + 1][s] - AC->TET_TX[r + 1][s - 1]))) - 1);
+            AC->TX[r][s + 1] = AC->TX[r + 1][s] + (AC->TX[r + 1][s] - AC->TX[r][s])
+                                                          / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TX[r + 1][s] - AC->TX[r][s])
+                                                                                               / (AC->TX[r + 1][s] - AC->TX[r + 1][s - 1]))) - 1);
 
-            AC->TET_TY[r][s + 1] = AC->TET_TY[r + 1][s] + (AC->TET_TY[r + 1][s] - AC->TET_TY[r][s])
-                                                          / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TET_TY[r + 1][s] - AC->TET_TY[r][s])
-                                                                                               / (AC->TET_TY[r + 1][s] - AC->TET_TY[r + 1][s - 1]))) - 1);
+            AC->TY[r][s + 1] = AC->TY[r + 1][s] + (AC->TY[r + 1][s] - AC->TY[r][s])
+                                                          / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TY[r + 1][s] - AC->TY[r][s])
+                                                                                               / (AC->TY[r + 1][s] - AC->TY[r + 1][s - 1]))) - 1);
         };
     }
 /*$TET$*/
 };
 
-Result *Taskbag::runTempletEngine(InitialData *initialData, double hBase) {
+Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase) {
     my_engine e(0, nullptr);
 /*$TET$footer*/
     AC = this;
-
+    METHOD = method;
     iDATA = initialData;
     N = static_cast<int>(round((iDATA->getTFinal() - iDATA->getT0()) / hBase));
     T_ARRAY = new double[N];
@@ -215,12 +215,12 @@ Result *Taskbag::runTempletEngine(InitialData *initialData, double hBase) {
     Y_TABLE->addPoint(T_ARRAY[0], iDATA->getY0());
     H_BASE = hBase;
     H = new double [M + 1];
-    TET_TX = new double *[M + 1];
-    TET_TY = new double *[M + 1];
+    TX = new double *[M + 1];
+    TY = new double *[M + 1];
     for (int r = 0; r <= M; r++) {
         H[r] = hBase / pow(2, r + 1);
-        TET_TX[r] = new double [M + 2];
-        TET_TY[r] = new double [M + 2];
+        TX[r] = new double [M + 2];
+        TY[r] = new double [M + 2];
     }
 
     producer a_producer(e);

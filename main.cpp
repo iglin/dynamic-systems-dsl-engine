@@ -20,7 +20,7 @@ int main() {
     initialData->setTFinal(10);
     double h = 0.0002;
 
-    Result *result = Extrapolation().applyRationalParallel(initialData, h);
+    Result *result = Extrapolation().applyRationalParallel(new EulersMethod(), initialData, h);
 
 
 //    Export utils sample usage
