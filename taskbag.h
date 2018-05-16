@@ -14,14 +14,17 @@
 class Taskbag {
 public:
     Result *runTempletEngine(InitialData *initialData, double hBase);
-private:
-    const int PROC_NUM = 16;
-    const int M = PROC_NUM / 2;
-    double *T_ARRAY = nullptr;
-    double *H = nullptr;
-    double **TET_TX = nullptr;
-    double **TET_TY = nullptr;
-    InitialData *iDATA = nullptr;
+
+    const int PROC_NUM = 8;
+    //const int M = PROC_NUM / 2;
+    const int M = PROC_NUM;
+    int N;
+    double *T_ARRAY;
+    double *H;
+    double H_BASE;
+    double **TET_TX;
+    double **TET_TY;
+    InitialData *iDATA;
     PointsTable *X_TABLE;
     PointsTable *Y_TABLE;
 };

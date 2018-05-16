@@ -23,8 +23,8 @@
 using namespace std;
 
 Taskbag *AC;
-atomic<int> R{0};
-atomic<int> i{1};
+atomic<int> R = 0;
+atomic<int> i = 0;
 int nextR() {
     return R++;
 }
@@ -32,71 +32,27 @@ int nextR() {
 
 using namespace TEMPLET;
 
-struct my_engine : engine{
-    my_engine(int argc, char *argv[]){
-        ::init(this, argc, argv);
-    }
-    void run(){ TEMPLET::run(this); }
-    void map(){ TEMPLET::map(this); }
-};
-
 #pragma templet ~mes=
 
-struct mes : message{
-    mes(actor*a, engine*e, int t) : _where(CLI), _cli(a), _client_id(t){
-        ::init(this, a, e);
-    }
-
-    void send(){
-        if (_where == CLI){ TEMPLET::send(this, _srv, _server_id); _where = SRV; }
-        else if (_where == SRV){ TEMPLET::send(this, _cli, _client_id); _where = CLI; }
-    }
-
+struct mes : message_interface{
 /*$TET$mes$$data*/
     int _mes;
 /*$TET$*/
-
-    enum { CLI, SRV } _where;
-    actor* _srv;
-    actor* _cli;
-    int _client_id;
-    int _server_id;
 };
 
 #pragma templet *producer(p!mes)+
 
-struct producer : actor{
-    enum tag{START,TAG_p};
-
-    producer(my_engine&e):p(this, &e, TAG_p){
-        ::init(this, &e, producer_recv_adapter);
-        ::init(&_start, this, &e);
-        ::send(&_start, this, START);
+struct producer : actor_interface{
+    producer(engine_interface&){
 /*$TET$producer$producer*/
 /*$TET$*/
     }
 
-    bool access(message*m){ return TEMPLET::access(m, this); }
-    bool access(message&m){ return TEMPLET::access(&m, this); }
-
-    void at(int _at){ TEMPLET::at(this, _at); }
-    void delay(double t){ TEMPLET::delay(this, t); }
-    double time(){ return TEMPLET::time(this); }
-    void stop(){ TEMPLET::stop(this); }
-
     mes p;
-
-    static void producer_recv_adapter (actor*a, message*m, int tag){
-        switch(tag){
-            case TAG_p: ((producer*)a)->p_handler(*((mes*)m)); break;
-            case START: ((producer*)a)->start(); break;
-        }
-    }
 
     void start(){
 /*$TET$producer$start*/
         p._mes = 0;
-        cout << "Producer is sending message : " << p._mes << endl;
         p.send();
 /*$TET$*/
     }
@@ -105,7 +61,6 @@ struct producer : actor{
 /*$TET$producer$p*/
         consumersFinished++;
         cout << "Got response from consumer " << m._mes;
-        stop();
         if (consumersFinished >= AC->PROC_NUM) {
             if (s < AC->M) {
                 s++;
@@ -128,43 +83,25 @@ struct producer : actor{
     }
 
 /*$TET$producer$$code&data*/
-    atomic<int> consumersFinished{0};
-    atomic<int> s{0};
+    atomic<int> consumersFinished = 0;
+    atomic<int> s = 0;
 /*$TET$*/
-    message _start;
 };
 
 #pragma templet *consumer(p?mes)
 
-struct consumer : actor{
-    enum tag{START,TAG_p};
-
-    consumer(my_engine&e){
-        ::init(this, &e, consumer_recv_adapter);
+struct consumer : actor_interface{
+    consumer(engine_interface&){
 /*$TET$consumer$consumer*/
         r = nextR();
 /*$TET$*/
     }
 
-    bool access(message*m){ return TEMPLET::access(m, this); }
-    bool access(message&m){ return TEMPLET::access(&m, this); }
-
-    void at(int _at){ TEMPLET::at(this, _at); }
-    void delay(double t){ TEMPLET::delay(this, t); }
-    double time(){ return TEMPLET::time(this); }
-    void stop(){ TEMPLET::stop(this); }
-
-    void p(mes&m){m._server_id=TAG_p; m._srv=this;}
-
-    static void consumer_recv_adapter (actor*a, message*m, int tag){
-        switch(tag){
-            case TAG_p: ((consumer*)a)->p_handler(*((mes*)m)); break;
-        }
-    }
+    void p(mes&){}
 
     void p_handler(mes&m){
 /*$TET$consumer$p*/
-        cout << "Got from producer s = " << m._mes << endl;
+        cout << m._mes << endl;
         if (r <= AC->M - m._mes) calculate(m._mes);
         m._mes = r; // my order number
         m.send();
@@ -175,7 +112,6 @@ struct consumer : actor{
     int r;
 
     bool calculate(int s) {
-        cout << "Consumer " << r << " is calculating s = " << s <<endl;
         if (s == 0) {
             AC->TET_TX[r][0] = 0;
             AC->TET_TX[r][1] = EulersMethod().calculateNextX(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
@@ -189,19 +125,33 @@ struct consumer : actor{
                                                              AC->T_ARRAY[i - 1], AC->H[r]);
         } else {
             AC->TET_TX[r][s + 1] = AC->TET_TX[r + 1][s] + (AC->TET_TX[r + 1][s] - AC->TET_TX[r][s])
-                                                          / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TET_TX[r + 1][s] - AC->TET_TX[r][s])
-                                                                                               / (AC->TET_TX[r + 1][s] - AC->TET_TX[r + 1][s - 1]))) - 1);
+                / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TET_TX[r + 1][s] - AC->TET_TX[r][s])
+                / (AC->TET_TX[r + 1][s] - AC->TET_TX[r + 1][s - 1]))) - 1);
 
             AC->TET_TY[r][s + 1] = AC->TET_TY[r + 1][s] + (AC->TET_TY[r + 1][s] - AC->TET_TY[r][s])
-                                                          / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TET_TY[r + 1][s] - AC->TET_TY[r][s])
-                                                                                               / (AC->TET_TY[r + 1][s] - AC->TET_TY[r + 1][s - 1]))) - 1);
+                / ((AC->H[r] / AC->H[r + s]) * (1 - ((AC->TET_TY[r + 1][s] - AC->TET_TY[r][s])
+                / (AC->TET_TY[r + 1][s] - AC->TET_TY[r + 1][s - 1]))) - 1);
         };
     }
 /*$TET$*/
 };
 
-Result *Taskbag::runTempletEngine(InitialData *initialData, double hBase) {
-    my_engine e(0, nullptr);
+int main(int argc, char *argv[])
+{
+    engine_interface e(argc, argv);
+/*$TET$footer*/
+    producer a_producer(e);
+    consumer a_consumer(e);
+
+    a_consumer.p(a_producer.p);
+
+    e.run();
+/*$TET$*/
+}
+
+Result *Taskbag::runTempletEngine(InitialData *initialData, double hBase)
+{
+    engine_interface e(0, nullptr);
 /*$TET$footer*/
     AC = this;
 
@@ -219,19 +169,17 @@ Result *Taskbag::runTempletEngine(InitialData *initialData, double hBase) {
     TET_TY = new double *[M + 1];
     for (int r = 0; r <= M; r++) {
         H[r] = hBase / pow(2, r + 1);
-        TET_TX[r] = new double [M + 2];
-        TET_TY[r] = new double [M + 2];
+        TET_TX = new double *[M + 2];
+        TET_TY = new double *[M + 2];
     }
 
     producer a_producer(e);
-    consumer **consumers = new consumer *[PROC_NUM];
     for (int i = 0; i < PROC_NUM; i++) {
-        consumers[i] = new consumer(e);
-        consumers[i]->p(a_producer.p);
+        consumer a_consumer(e);
+        a_consumer.p(a_producer.p);
     }
 
     e.run();
-
     return new Result(X_TABLE, Y_TABLE, nullptr);
 /*$TET$*/
 }
