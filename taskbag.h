@@ -12,9 +12,6 @@
 #include "NumericalMethod.h"
 
 
-const int PROC_NUM = 8;
-//const int M = PROC_NUM / 2;
-const int M = PROC_NUM;
 class Taskbag {
 public:
     Result *runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase, int M);
