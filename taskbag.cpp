@@ -16,6 +16,7 @@
 /*--------------------------------------------------------------------------*/
 
 #include <iostream>
+#include <atomic>
 #include "taskbag.h"
 #include "EulersMethod.h"
 
@@ -24,8 +25,8 @@ using namespace std;
 const int PROC_NUM = 8;
 
 Taskbag *AC;
-int R;
-int i;
+atomic<int> R{0};
+atomic<int> i{1};
 
 void refresh() {
     R = 0;
@@ -185,7 +186,7 @@ struct producer : actor{
     }
 
 /*$TET$producer$$code&data*/
-    int consumersFinished;
+    atomic<int> consumersFinished{0};
     int s;
 
     bool sendToAll() {

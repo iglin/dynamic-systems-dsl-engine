@@ -70,7 +70,7 @@ namespace TEMPLET {
 
 #if defined(DEBUG_EXECUTION) || (!defined(SERIAL_EXECUTION) && !defined(PARALLEL_EXECUTION) && !defined(SIMULATED_EXECUTION) && !defined(DISTRIBUTED_EXECUTION))
 
-#define USE_OPENMP
+//#define USE_OPENMP
 
 #if !defined(USE_OPENMP)
 
