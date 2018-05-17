@@ -6,12 +6,10 @@
 #include <cmath>
 #include <stdexcept>
 
-InitialData::InitialData() = default;
-
-InitialData::InitialData(double x0, double y0, double z0) : x0(x0), y0(y0), z0(z0) {}
-
-InitialData::InitialData(double x0, double y0, double z0, double t0, double tFinal) : x0(x0), y0(y0), z0(z0), t0(t0),
-                                                                                      tFinal(tFinal) {}
+//InitialData::InitialData(double x0, double y0, double z0) : x0(x0), y0(y0), z0(z0) {}
+//
+//InitialData::InitialData(double x0, double y0, double z0, double t0, double tFinal) : x0(x0), y0(y0), z0(z0), t0(t0),
+//                                                                                      tFinal(tFinal) {}
 
 double InitialData::firstDerivativeX(double x, double t) {
 #if defined(dx)
@@ -147,4 +145,7 @@ double InitialData::derivativeZ(double x, double y, double z, double t) {
 #else
     throw std::invalid_argument( "dz/dt is not defined!" );
 #endif
+}
+
+InitialData::InitialData() {
 }

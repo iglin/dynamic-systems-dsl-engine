@@ -10,11 +10,12 @@
 #include "templet.hpp"
 #include "Result.h"
 #include "NumericalMethod.h"
+#include "DormandPrinceMethod.h"
 
 
 class Taskbag {
 public:
-    Result *runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase, int M);
+    Result *runTempletEngine(DormandPrinceMethod *method, InitialData *initialData, double hBase, int M);
 
     int N;
     int M;
@@ -28,7 +29,7 @@ public:
     PointsTable *X_TABLE;
     PointsTable *Y_TABLE;
     PointsTable *Z_TABLE;
-    NumericalMethod *METHOD;
+    DormandPrinceMethod *METHOD;
 };
 
 #endif //DYNAMIC_SYSTEMS_DSL_TASKBAG_H

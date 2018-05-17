@@ -10,7 +10,7 @@
 
 class SimpsonsMethod : NumericalMethod {
 public:
-    Result *apply(InitialData *data, double h) override;
+    Result *apply(InitialData *data, double h);
 };
 
 

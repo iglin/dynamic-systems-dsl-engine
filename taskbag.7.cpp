@@ -323,7 +323,7 @@ Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialD
     TY = new double *[M + 1];
     TZ = new double *[M + 1];
     for (int r = 0; r <= M; r++) {
-        H[r] = hBase / pow(2, r + 1);
+        H[r] = hBase / pow(2.0, r + 1);
         TX[r] = new double [M + 2];
         TY[r] = new double [M + 2];
         TZ[r] = new double [M + 2];

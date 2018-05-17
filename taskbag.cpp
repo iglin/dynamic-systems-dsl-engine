@@ -80,6 +80,8 @@ struct producer : actor{
         ::init(&_start, this, &e);
         ::send(&_start, this, START);
 /*$TET$producer$producer*/
+        consumersFinished = 0;
+        s = 0;
 /*$TET$*/
     }
 
@@ -165,8 +167,8 @@ struct producer : actor{
     }
 
 /*$TET$producer$$code&data*/
-    int consumersFinished = 0;
-    int s = 0;
+    int consumersFinished;
+    int s;
 
     bool sendToAll() {
         p0._mes = s;
@@ -287,7 +289,7 @@ struct consumer : actor{
 /*$TET$*/
 };
 
-Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase, int M) {
+Result *Taskbag::runTempletEngine(DormandPrinceMethod *method, InitialData *initialData, double hBase, int M) {
     refresh();
     my_engine e(0, NULL);
 /*$TET$footer*/
@@ -310,7 +312,7 @@ Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialD
     TY = new double *[M + 1];
     TZ = new double *[M + 1];
     for (int r = 0; r <= M; r++) {
-        H[r] = hBase / pow(2, r + 1);
+        H[r] = hBase / pow(2.0, r + 1);
         TX[r] = new double [M + 2];
         TY[r] = new double [M + 2];
         TZ[r] = new double [M + 2];

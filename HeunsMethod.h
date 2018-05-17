@@ -12,7 +12,7 @@
 class HeunsMethod : NumericalMethod {
 public:
 private:
-    Result *apply(InitialData *data, double h) override;
+    Result *apply(InitialData *data, double h);
 };
 
 

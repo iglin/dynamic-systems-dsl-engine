@@ -10,13 +10,13 @@
 
 class NumericalMethod {
 public:
-    virtual Result *apply(InitialData *data, double h) = 0;
+    Result *apply(InitialData *data, double h);
 
-    virtual double calculateNextX(double xPrev, double yPrev, double zPrev, double tPrev, double h) = 0;
+    double calculateNextX(double xPrev, double yPrev, double zPrev, double tPrev, double h);
 
-    virtual double calculateNextY(double xPrev, double yPrev, double zPrev, double tPrev, double h) = 0;
+    double calculateNextY(double xPrev, double yPrev, double zPrev, double tPrev, double h);
 
-    virtual double calculateNextZ(double xPrev, double yPrev, double zPrev, double tPrev, double h) = 0;
+    double calculateNextZ(double xPrev, double yPrev, double zPrev, double tPrev, double h);
 };
 
 #endif //DYNAMIC_SYSTEMS_DSL_NUMERICALMETHOD_H

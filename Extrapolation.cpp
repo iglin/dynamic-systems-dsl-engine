@@ -10,7 +10,7 @@
 /*
  * H - base step, M - extrapolation order
  */
-Result *Extrapolation::applyPolynomical(NumericalMethod *method, InitialData *initialData, double H, int M) {
+Result *Extrapolation::applyPolynomical(DormandPrinceMethod *method, InitialData *initialData, double H, int M) {
     int n = static_cast<int>(round((initialData->getTFinal() - initialData->getT0()) / H));
     PointsTable *xTable = new PointsTable("x");
     PointsTable *yTable = new PointsTable("y");
@@ -30,7 +30,7 @@ Result *Extrapolation::applyPolynomical(NumericalMethod *method, InitialData *in
     double **Ty = new double *[M + 1];
     double h[M + 1];
     for (int r = 0; r <= M; r++) {
-        h[r] = H / pow(2, r + 1);
+        h[r] = H / pow(2.0, r + 1);
         Tx[r] = new double [M + 1];
         Ty[r] = new double [M + 1];
     }
@@ -63,7 +63,7 @@ Result *Extrapolation::applyPolynomical(NumericalMethod *method, InitialData *in
     return new Result(xTable, yTable, zTable);
 }
 
-Result *Extrapolation::applyRational(NumericalMethod *method, InitialData *initialData, double H, int M) {
+Result *Extrapolation::applyRational(DormandPrinceMethod *method, InitialData *initialData, double H, int M) {
     int n = static_cast<int>(round((initialData->getTFinal() - initialData->getT0()) / H));
     PointsTable *xTable = new PointsTable("x");
     PointsTable *yTable = new PointsTable("y");
@@ -84,7 +84,7 @@ Result *Extrapolation::applyRational(NumericalMethod *method, InitialData *initi
     double **Tz = new double *[M + 1];
     double h[M + 1];
     for (int r = 0; r <= M; r++) {
-        h[r] = H / pow(2, r + 1);
+        h[r] = H / pow(2.0, r + 1);
         Tx[r] = new double [M + 2];
         Ty[r] = new double [M + 2];
         Tz[r] = new double [M + 2];
@@ -135,7 +135,7 @@ Result *Extrapolation::applyRational(NumericalMethod *method, InitialData *initi
     return new Result(xTable, yTable, zTable);
 }
 
-Result *Extrapolation::applyRationalOMP(NumericalMethod *method, InitialData *initialData, double H, int M) {
+Result *Extrapolation::applyRationalOMP(DormandPrinceMethod *method, InitialData *initialData, double H, int M) {
     int n = static_cast<int>(round((initialData->getTFinal() - initialData->getT0()) / H));
     PointsTable *xTable = new PointsTable("x");
     PointsTable *yTable = new PointsTable("y");
@@ -155,7 +155,7 @@ Result *Extrapolation::applyRationalOMP(NumericalMethod *method, InitialData *in
     double **Ty = new double *[M + 1];
     double h[M + 1];
     for (int r = 0; r <= M; r++) {
-        h[r] = H / pow(2, r + 1);
+        h[r] = H / pow(2.0, r + 1);
         Tx[r] = new double [M + 2];
         Ty[r] = new double [M + 2];
     }
@@ -196,6 +196,6 @@ Result *Extrapolation::applyRationalOMP(NumericalMethod *method, InitialData *in
     return new Result(xTable, yTable, zTable);
 }
 
-Result *Extrapolation::applyRationalParallel(NumericalMethod *method, InitialData *initialData, double H, int M) {
+Result *Extrapolation::applyRationalParallel(DormandPrinceMethod *method, InitialData *initialData, double H, int M) {
     return Taskbag().runTempletEngine(method, initialData, H, M);
 }

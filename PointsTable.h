@@ -12,7 +12,7 @@ using namespace std;
 
 class PointsTable {
 private:
-    string coordName = string("x");
+    string coordName;
     map<double, double> *points;
 
     string stringifyPoint(pair<double, double> point);

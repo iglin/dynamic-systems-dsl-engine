@@ -9,16 +9,17 @@
 #include "Result.h"
 #include "InitialData.h"
 #include "NumericalMethod.h"
+#include "DormandPrinceMethod.h"
 
 class Extrapolation {
 public:
-    Result *applyPolynomical(NumericalMethod *method, InitialData *initialData, double H, int M);
+    Result *applyPolynomical(DormandPrinceMethod *method, InitialData *initialData, double H, int M);
 
-    Result *applyRational(NumericalMethod *method, InitialData *initialData, double H, int M);
+    Result *applyRational(DormandPrinceMethod *method, InitialData *initialData, double H, int M);
 
-    Result *applyRationalOMP(NumericalMethod *method, InitialData *initialData, double H, int M);
+    Result *applyRationalOMP(DormandPrinceMethod *method, InitialData *initialData, double H, int M);
 
-    Result *applyRationalParallel(NumericalMethod *method, InitialData *initialData, double H, int M);
+    Result *applyRationalParallel(DormandPrinceMethod *method, InitialData *initialData, double H, int M);
 };
 
 

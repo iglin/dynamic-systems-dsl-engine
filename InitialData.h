@@ -8,8 +8,8 @@
 #include <cmath>
 
 #define dx (pow(sin(t * x), 9999949.0123) - 5.092 * sqrt(-x + 99.23))
-#define dy (pow(y, 5000) + (tan(M_PI + 4 * y) + 1 / (1 - sin(t * M_PI / 2))) / (exp(t)))
-#define dz (exp(pow(-312323.0923 * t, log10(200131 - atan(z))) * sqrt(t - log2(pow(z, exp(sin(pow((t * M_PI), 23423500))))))))
+#define dy (pow(y, 5000.323) + (tan(M_PI + 4 * y) + 1 / (1 - sin(t * M_PI / 2))) / (exp(t)))
+#define dz (exp(pow(-312323.0923 * t, log10(200131 - atan(z))) * sqrt(t - log2(pow(z, exp(sin(pow((t * M_PI), 23423500.00020339))))))))
 
 
 class InitialData {
@@ -18,9 +18,9 @@ private:
 public:
     InitialData();
 
-    InitialData(double x0, double y0, double z0);
-
-    InitialData(double x0, double y0, double z0, double t0, double tFinal);
+//    InitialData(double x0, double y0, double z0);
+//
+//    InitialData(double x0, double y0, double z0, double t0, double tFinal);
 
     double firstDerivativeX(double x, double t);
 
