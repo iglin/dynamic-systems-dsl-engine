@@ -137,49 +137,49 @@ struct producer : actor{
 
     void p0_handler(mes&m){
 /*$TET$producer$p0*/
-        produce(m, p0);
+        produce();
 /*$TET$*/
     }
 
     void p1_handler(mes&m){
 /*$TET$producer$p1*/
-        produce(m, p1);
+        produce();
 /*$TET$*/
     }
 
     void p2_handler(mes&m){
 /*$TET$producer$p2*/
-        produce(m, p2);
+        produce();
 /*$TET$*/
     }
 
     void p3_handler(mes&m){
 /*$TET$producer$p3*/
-        produce(m, p3);
+        produce();
 /*$TET$*/
     }
 
     void p4_handler(mes&m){
 /*$TET$producer$p4*/
-        produce(m, p4);
+        produce();
 /*$TET$*/
     }
 
     void p5_handler(mes&m){
 /*$TET$producer$p5*/
-        produce(m, p5);
+        produce();
 /*$TET$*/
     }
 
     void p6_handler(mes&m){
 /*$TET$producer$p6*/
-        produce(m, p6);
+        produce();
 /*$TET$*/
     }
 
     void p7_handler(mes&m){
 /*$TET$producer$p7*/
-        produce(m, p7);
+        produce();
 /*$TET$*/
     }
 
@@ -187,7 +187,7 @@ struct producer : actor{
     atomic<int> consumersFinished{0};
     atomic<int> s{0};
 
-    bool sendToAll(int value) {
+    bool sendToAll() {
         p0._mes = s;
         p0.send();
         p1._mes = s;
@@ -206,7 +206,7 @@ struct producer : actor{
         p7.send();
     }
 
-    bool produce(mes&m, mes &port) {
+    bool produce() {
         consumersFinished++;
         //cout << "Got response from consumer " << m._mes << endl;
 //        cout << "Finished " << consumersFinished << " consumers" << endl;
@@ -214,7 +214,7 @@ struct producer : actor{
             consumersFinished = 0;
             if (s < M) {
                 s++;
-                sendToAll(s);
+                sendToAll();
             } else {
                 AC->X_TABLE->addPoint(AC->T_ARRAY[i], AC->TX[0][M]);
                 AC->Y_TABLE->addPoint(AC->T_ARRAY[i], AC->TY[0][M]);
@@ -224,7 +224,7 @@ struct producer : actor{
                     i++;
                     AC->T_ARRAY[i] = AC->T_ARRAY[i - 1] + AC->H_BASE;
                     s = 0;
-                    sendToAll(s);
+                    sendToAll();
                 }
             }
         }
@@ -264,7 +264,9 @@ struct consumer : actor{
     void p_handler(mes&m){
 /*$TET$consumer$p*/
         //cout << "Got from producer s = " << m._mes << endl;
-        if (r <= M - m._mes) calculate(m._mes);
+        for (int shiftedR = r; shiftedR <= M - m._mes; shiftedR += PROC_NUM) {
+            calculate(shiftedR, m._mes);
+        }
         m._mes = r; // my order number
         m.send();
 /*$TET$*/
@@ -273,7 +275,7 @@ struct consumer : actor{
 /*$TET$consumer$$code&data*/
     int r;
 
-    bool calculate(int s) {
+    bool calculate(int r, int s) {
         //cout << "Consumer " << r << " is calculating s = " << s <<endl;
         if (s == 0) {
             AC->TX[r][0] = 0;
@@ -308,11 +310,12 @@ struct consumer : actor{
 /*$TET$*/
 };
 
-Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase) {
+Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase, int M) {
     refresh();
     my_engine e(0, nullptr);
 /*$TET$footer*/
     AC = this;
+    this->M = M;
     METHOD = method;
     iDATA = initialData;
     N = static_cast<int>(round((iDATA->getTFinal() - iDATA->getT0()) / hBase));

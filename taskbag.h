@@ -17,9 +17,10 @@ const int PROC_NUM = 8;
 const int M = PROC_NUM;
 class Taskbag {
 public:
-    Result *runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase);
+    Result *runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase, int M);
 
     int N;
+    int M;
     double *T_ARRAY;
     double *H;
     double H_BASE;

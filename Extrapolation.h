@@ -18,7 +18,7 @@ public:
 
     Result *applyRationalOMP(NumericalMethod *method, InitialData *initialData, double H, int M);
 
-    Result *applyRationalParallel(NumericalMethod *method, InitialData *initialData, double H);
+    Result *applyRationalParallel(NumericalMethod *method, InitialData *initialData, double H, int M);
 };
 
 
