@@ -6,6 +6,7 @@
 #define DYNAMIC_SYSTEMS_DSL_POINTSTABLE_H
 
 #include <map>
+#include <string>
 
 using namespace std;
 

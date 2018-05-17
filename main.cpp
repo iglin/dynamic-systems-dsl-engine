@@ -18,7 +18,7 @@ const int ORDER = 100;
 // TODO: move all the dynamically generated code somewhere else
 int main() {
     // artificially generating initial data
-    auto *initialData = new InitialData();
+    InitialData *initialData = new InitialData();
     initialData->setX0(0.011);
     initialData->setY0(0.011);
     initialData->setZ0(0.011);

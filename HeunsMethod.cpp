@@ -23,5 +23,5 @@
 //}
 
 Result *HeunsMethod::apply(InitialData *data, double h) {
-    return nullptr;
+    return NULL;
 }

@@ -14,9 +14,9 @@ private:
     PointsTable *yTable;
     PointsTable *zTable;
 
-    PointsTable *xyPhasePortrait = nullptr;
-    PointsTable *xzPhasePortrait = nullptr;
-    PointsTable *yzPhasePortrait = nullptr;
+    PointsTable *xyPhasePortrait;
+    PointsTable *xzPhasePortrait;
+    PointsTable *yzPhasePortrait;
 public:
     Result();
 
