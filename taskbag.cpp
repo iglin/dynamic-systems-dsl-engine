@@ -21,7 +21,7 @@
 
 using namespace std;
 
-const int PROC_NUM = 6;
+const int PROC_NUM = 8;
 
 Taskbag *AC;
 int R;
@@ -70,18 +70,16 @@ struct mes : message{
     int _server_id;
 };
 
-#pragma templet *producer(p0!mes,p1!mes,p2!mes,p3!mes,p4!mes,p5!mes)+
+#pragma templet *producer(p0!mes,p1!mes,p2!mes,p3!mes,p4!mes,p5!mes,p6!mes,p7!mes)+
 
 struct producer : actor{
-    enum tag{START,TAG_p0,TAG_p1,TAG_p2,TAG_p3,TAG_p4,TAG_p5};
+    enum tag{START,TAG_p0,TAG_p1,TAG_p2,TAG_p3,TAG_p4,TAG_p5,TAG_p6,TAG_p7};
 
-    producer(my_engine&e):p0(this, &e, TAG_p0),p1(this, &e, TAG_p1),p2(this, &e, TAG_p2),p3(this, &e, TAG_p3),p4(this, &e, TAG_p4),p5(this, &e, TAG_p5){
+    producer(my_engine&e):p0(this, &e, TAG_p0),p1(this, &e, TAG_p1),p2(this, &e, TAG_p2),p3(this, &e, TAG_p3),p4(this, &e, TAG_p4),p5(this, &e, TAG_p5),p6(this, &e, TAG_p6),p7(this, &e, TAG_p7){
         ::init(this, &e, producer_recv_adapter);
         ::init(&_start, this, &e);
         ::send(&_start, this, START);
 /*$TET$producer$producer*/
-        consumersFinished = 0;
-        s = 0;
 /*$TET$*/
     }
 
@@ -99,6 +97,8 @@ struct producer : actor{
     mes p3;
     mes p4;
     mes p5;
+    mes p6;
+    mes p7;
 
     static void producer_recv_adapter (actor*a, message*m, int tag){
         switch(tag){
@@ -108,6 +108,8 @@ struct producer : actor{
             case TAG_p3: ((producer*)a)->p3_handler(*((mes*)m)); break;
             case TAG_p4: ((producer*)a)->p4_handler(*((mes*)m)); break;
             case TAG_p5: ((producer*)a)->p5_handler(*((mes*)m)); break;
+            case TAG_p6: ((producer*)a)->p6_handler(*((mes*)m)); break;
+            case TAG_p7: ((producer*)a)->p7_handler(*((mes*)m)); break;
             case START: ((producer*)a)->start(); break;
         }
     }
@@ -120,6 +122,8 @@ struct producer : actor{
         p3._mes = 0;
         p4._mes = 0;
         p5._mes = 0;
+        p6._mes = 0;
+        p7._mes = 0;
         //cout << "Producer is sending message : " << p0._mes << endl;
         p0.send();
         p1.send();
@@ -127,6 +131,8 @@ struct producer : actor{
         p3.send();
         p4.send();
         p5.send();
+        p6.send();
+        p7.send();
 /*$TET$*/
     }
 
@@ -166,6 +172,18 @@ struct producer : actor{
 /*$TET$*/
     }
 
+    void p6_handler(mes&m){
+/*$TET$producer$p6*/
+        produce();
+/*$TET$*/
+    }
+
+    void p7_handler(mes&m){
+/*$TET$producer$p7*/
+        produce();
+/*$TET$*/
+    }
+
 /*$TET$producer$$code&data*/
     int consumersFinished;
     int s;
@@ -183,6 +201,10 @@ struct producer : actor{
         p4.send();
         p5._mes = s;
         p5.send();
+        p6._mes = s;
+        p6.send();
+        p7._mes = s;
+        p7.send();
     }
 
     bool produce() {
@@ -330,6 +352,8 @@ Result *Taskbag::runTempletEngine(DormandPrinceMethod *method, InitialData *init
     consumers[3]->p(a_producer.p3);
     consumers[4]->p(a_producer.p4);
     consumers[5]->p(a_producer.p5);
+    consumers[6]->p(a_producer.p6);
+    consumers[7]->p(a_producer.p7);
 
     e.run();
 

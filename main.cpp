@@ -13,17 +13,19 @@
 using namespace std;
 
 const int ITERATIONS = 3;
-const int ORDER = 100;
+const int ORDER = 30;
+
 
 // TODO: move all the dynamically generated code somewhere else
 int main() {
+    omp_set_num_threads(9);
     // artificially generating initial data
     InitialData *initialData = new InitialData();
     initialData->setX0(0.011);
     initialData->setY0(0.011);
     initialData->setZ0(0.011);
     initialData->setT0(0);
-    initialData->setTFinal(20);
+    initialData->setTFinal(10);
     double h = 0.0002;
 
     double t1, t2;

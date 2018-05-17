@@ -16,17 +16,16 @@
 /*--------------------------------------------------------------------------*/
 
 #include <iostream>
-#include <atomic>
 #include "taskbag.h"
 #include "EulersMethod.h"
 
 using namespace std;
 
-const int PROC_NUM = 8;
+const int PROC_NUM = 6;
 
 Taskbag *AC;
-atomic<int> R{0};
-atomic<int> i{1};
+int R;
+int i;
 
 void refresh() {
     R = 0;
@@ -71,16 +70,18 @@ struct mes : message{
     int _server_id;
 };
 
-#pragma templet *producer(p0!mes,p1!mes,p2!mes,p3!mes,p4!mes,p5!mes,p6!mes,p7!mes)+
+#pragma templet *producer(p0!mes,p1!mes,p2!mes,p3!mes,p4!mes,p5!mes)+
 
 struct producer : actor{
-    enum tag{START,TAG_p0,TAG_p1,TAG_p2,TAG_p3,TAG_p4,TAG_p5,TAG_p6,TAG_p7};
+    enum tag{START,TAG_p0,TAG_p1,TAG_p2,TAG_p3,TAG_p4,TAG_p5};
 
-    producer(my_engine&e):p0(this, &e, TAG_p0),p1(this, &e, TAG_p1),p2(this, &e, TAG_p2),p3(this, &e, TAG_p3),p4(this, &e, TAG_p4),p5(this, &e, TAG_p5),p6(this, &e, TAG_p6),p7(this, &e, TAG_p7){
+    producer(my_engine&e):p0(this, &e, TAG_p0),p1(this, &e, TAG_p1),p2(this, &e, TAG_p2),p3(this, &e, TAG_p3),p4(this, &e, TAG_p4),p5(this, &e, TAG_p5){
         ::init(this, &e, producer_recv_adapter);
         ::init(&_start, this, &e);
         ::send(&_start, this, START);
 /*$TET$producer$producer*/
+        consumersFinished = 0;
+        s = 0;
 /*$TET$*/
     }
 
@@ -98,8 +99,6 @@ struct producer : actor{
     mes p3;
     mes p4;
     mes p5;
-    mes p6;
-    mes p7;
 
     static void producer_recv_adapter (actor*a, message*m, int tag){
         switch(tag){
@@ -109,8 +108,6 @@ struct producer : actor{
             case TAG_p3: ((producer*)a)->p3_handler(*((mes*)m)); break;
             case TAG_p4: ((producer*)a)->p4_handler(*((mes*)m)); break;
             case TAG_p5: ((producer*)a)->p5_handler(*((mes*)m)); break;
-            case TAG_p6: ((producer*)a)->p6_handler(*((mes*)m)); break;
-            case TAG_p7: ((producer*)a)->p7_handler(*((mes*)m)); break;
             case START: ((producer*)a)->start(); break;
         }
     }
@@ -123,17 +120,18 @@ struct producer : actor{
         p3._mes = 0;
         p4._mes = 0;
         p5._mes = 0;
-        p6._mes = 0;
-        p7._mes = 0;
-        //cout << "Producer is sending message : " << p0._mes << endl;
+//        cout << "Producer is sending 0 to consumer 0" << endl;
         p0.send();
+//        cout << "Producer is sending 0 to consumer 1" << endl;
         p1.send();
+//        cout << "Producer is sending 0 to consumer 2" << endl;
         p2.send();
+//        cout << "Producer is sending 0 to consumer 3" << endl;
         p3.send();
+//        cout << "Producer is sending 0 to consumer 4" << endl;
         p4.send();
+//        cout << "Producer is sending 0 to consumer 5" << endl;
         p5.send();
-        p6.send();
-        p7.send();
 /*$TET$*/
     }
 
@@ -173,44 +171,34 @@ struct producer : actor{
 /*$TET$*/
     }
 
-    void p6_handler(mes&m){
-/*$TET$producer$p6*/
-        produce();
-/*$TET$*/
-    }
-
-    void p7_handler(mes&m){
-/*$TET$producer$p7*/
-        produce();
-/*$TET$*/
-    }
-
 /*$TET$producer$$code&data*/
-    atomic<int> consumersFinished{0};
-    atomic<int> s{0};
+    int consumersFinished;
+    int s;
 
     bool sendToAll() {
         p0._mes = s;
+//        cout << "Producer is sending " << s << " to consumer 0" << endl;
         p0.send();
         p1._mes = s;
+//        cout << "Producer is sending " << s << " to consumer 1" << endl;
         p1.send();
         p2._mes = s;
+//        cout << "Producer is sending " << s << " to consumer 2" << endl;
         p2.send();
         p3._mes = s;
+//        cout << "Producer is sending " << s << " to consumer 3" << endl;
         p3.send();
         p4._mes = s;
+//        cout << "Producer is sending " << s << " to consumer 4" << endl;
         p4.send();
         p5._mes = s;
+//        cout << "Producer is sending " << s << " to consumer 5" << endl;
         p5.send();
-        p6._mes = s;
-        p6.send();
-        p7._mes = s;
-        p7.send();
     }
 
     bool produce() {
         consumersFinished++;
-        //cout << "Got response from consumer " << m._mes << endl;
+//        cout << "Got response from consumer " << endl;
 //        cout << "Finished " << consumersFinished << " consumers" << endl;
         if (consumersFinished >= PROC_NUM) {
             consumersFinished = 0;
@@ -265,7 +253,7 @@ struct consumer : actor{
 
     void p_handler(mes&m){
 /*$TET$consumer$p*/
-        //cout << "Got from producer s = " << m._mes << endl;
+//        cout << "Got from producer s = " << m._mes << endl;
         for (int shiftedR = r; shiftedR <= AC->M - m._mes; shiftedR += PROC_NUM) {
             calculate(shiftedR, m._mes);
         }
@@ -278,7 +266,7 @@ struct consumer : actor{
     int r;
 
     bool calculate(int r, int s) {
-        //cout << "Consumer " << r << " is calculating s = " << s <<endl;
+//        cout << "Consumer " << r << " is calculating s = " << s <<endl;
         if (s == 0) {
             AC->TX[r][0] = 0;
             AC->TX[r][1] = AC->METHOD->calculateNextX(AC->X_TABLE->getY(AC->T_ARRAY[i - 1]),
@@ -312,9 +300,9 @@ struct consumer : actor{
 /*$TET$*/
 };
 
-Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase, int M) {
+Result *Taskbag::runTempletEngine(DormandPrinceMethod *method, InitialData *initialData, double hBase, int M) {
     refresh();
-    my_engine e(0, nullptr);
+    my_engine e(0, NULL);
 /*$TET$footer*/
     AC = this;
     this->M = M;
@@ -353,8 +341,6 @@ Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialD
     consumers[3]->p(a_producer.p3);
     consumers[4]->p(a_producer.p4);
     consumers[5]->p(a_producer.p5);
-    consumers[6]->p(a_producer.p6);
-    consumers[7]->p(a_producer.p7);
 
     e.run();
 
