@@ -12,7 +12,7 @@
 #include "NumericalMethod.h"
 
 
-class Taskbag {
+class TempletProxy {
 public:
     Result *runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase, int M);
 

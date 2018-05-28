@@ -24,7 +24,7 @@ using namespace std;
 
 const int PROC_NUM = 6;
 
-Taskbag *AC;
+TempletProxy *AC;
 atomic<int> R{0};
 atomic<int> i{1};
 
@@ -288,7 +288,7 @@ struct consumer : actor{
 /*$TET$*/
 };
 
-Result *Taskbag::runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase, int M) {
+Result *TempletProxy::runTempletEngine(NumericalMethod *method, InitialData *initialData, double hBase, int M) {
     refresh();
     my_engine e(0, nullptr);
 /*$TET$footer*/

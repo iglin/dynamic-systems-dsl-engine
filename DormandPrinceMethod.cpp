@@ -43,7 +43,6 @@ Result *DormandPrinceMethod::apply(InitialData *data, double h) {
 }
 
 
-//TODO: return with error estimate
 double DormandPrinceMethod::calculateNextX(double xPrev, double yPrev, double zPrev, double tPrev, double h) {
     double k1 = InitialData::derivativeX(xPrev, yPrev, zPrev, tPrev);
     double k2 = InitialData::derivativeX(xPrev + h * (k1 / 5), yPrev, zPrev, tPrev + h / 5);

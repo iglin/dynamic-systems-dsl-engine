@@ -197,5 +197,5 @@ Result *Extrapolation::applyRationalOMP(NumericalMethod *method, InitialData *in
 }
 
 Result *Extrapolation::applyRationalParallel(NumericalMethod *method, InitialData *initialData, double H, int M) {
-    return Taskbag().runTempletEngine(method, initialData, H, M);
+    return TempletProxy().runTempletEngine(method, initialData, H, M);
 }
