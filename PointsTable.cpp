@@ -10,13 +10,13 @@ PointsTable::PointsTable() {
     points = new std::map<double, double>();
 }
 
-PointsTable::PointsTable(const string &coordName) : coordName(coordName) {
+PointsTable::PointsTable(const string &ordinate) : ordinate(ordinate) {
     points = new std::map<double, double>();
 }
 
 PointsTable::PointsTable(map<double, double> *points) : points(points) {}
 
-PointsTable::PointsTable(const string &coordName, map<double, double> *points) : coordName(coordName), points(points) {}
+PointsTable::PointsTable(const string &coordName, map<double, double> *points) : ordinate(coordName), points(points) {}
 
 void PointsTable::clear() {
     PointsTable::points->clear();
@@ -47,8 +47,8 @@ void PointsTable::replacePoint(double x, double y) {
 
 string PointsTable::stringifyPoint(pair<double, double> point) {
     stringstream result;
-    result << string("{t:\'") << to_string(point.first)
-           << string("\', ") << coordName << string(":\'") << to_string(point.second) << "\'}";
+    result << string("{") << abscissa << string(":\'") << to_string(point.first)
+           << string("\', ") << ordinate << string(":\'") << to_string(point.second) << "\'}";
     return result.str();
 }
 
@@ -67,8 +67,8 @@ string PointsTable::toString() {
 
 string PointsTable::pointToJson(pair<double, double> point) {
     stringstream result;
-    result << string(R"({"t":")") << to_string(point.first)
-           << string(R"(", ")") << coordName << string(R"(":")") << to_string(point.second) << "\"}";
+    result << string("{\"") << abscissa << string("\":\"") << to_string(point.first)
+           << string(R"(", ")") << ordinate << string(R"(":")") << to_string(point.second) << "\"}";
     return result.str();
 }
 
@@ -85,14 +85,6 @@ string PointsTable::toJson() {
     return result.str();
 }
 
-const string &PointsTable::getCoordName() const {
-    return coordName;
-}
-
-void PointsTable::setCoordName(const string &coordName) {
-    PointsTable::coordName = coordName;
-}
-
 map<double, double> *PointsTable::getPoints() const {
     return points;
 }
@@ -104,3 +96,21 @@ void PointsTable::setPoints(map<double, double> *points) {
 PointsTable::~PointsTable() {
     delete points;
 }
+
+const string &PointsTable::getAbscissa() const {
+    return abscissa;
+}
+
+void PointsTable::setAbscissa(const string &abscissa) {
+    PointsTable::abscissa = abscissa;
+}
+
+const string &PointsTable::getOrdinate() const {
+    return ordinate;
+}
+
+void PointsTable::setOrdinate(const string &ordinate) {
+    PointsTable::ordinate = ordinate;
+}
+
+PointsTable::PointsTable(const string &abscissa, const string &ordinate) : abscissa(abscissa), ordinate(ordinate) {}

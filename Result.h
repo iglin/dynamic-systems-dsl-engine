@@ -7,6 +7,7 @@
 
 
 #include "PointsTable.h"
+#include "Portrait.h"
 
 class Result {
 private:
@@ -14,9 +15,9 @@ private:
     PointsTable *yTable;
     PointsTable *zTable;
 
-    PointsTable *xyPhasePortrait = nullptr;
-    PointsTable *xzPhasePortrait = nullptr;
-    PointsTable *yzPhasePortrait = nullptr;
+    Portrait *xyPhasePortrait = nullptr;
+    Portrait *xzPhasePortrait = nullptr;
+    Portrait *yzPhasePortrait = nullptr;
 public:
     Result();
 
@@ -34,11 +35,11 @@ public:
 
     void setZTable(PointsTable *zTable);
 
-    PointsTable *getXYPhasePortrait();
+    Portrait *getXYPhasePortrait();
 
-    PointsTable *getXZPhasePortrait();
+    Portrait *getXZPhasePortrait();
 
-    PointsTable *getYZPhasePortrait();
+    Portrait *getYZPhasePortrait();
 };
 
 

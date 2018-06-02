@@ -9,14 +9,43 @@
 #include "SimpsonsMethod.h"
 #include "Extrapolation.h"
 #include "DormandPrinceMethod.h"
+#include "Portrait.h"
 
 using namespace std;
 
 const int ITERATIONS = 3;
 const int ORDER = 100;
 
-// TODO: move all the dynamically generated code somewhere else
 int main() {
+    auto *initialData = new InitialData();
+    initialData->setX0(0.8);
+    initialData->setY0(0.5);
+    //initialData->setZ0(0.011);
+    initialData->setT0(0);
+    initialData->setTFinal(3);
+    double h = 0.001;
+
+    Result *result = RungeKuttaMethod().apply(initialData, h);
+    cout << result->getXYPhasePortrait()->toJson();
+
+    ExportUtils::phasePortrait("xy.html", result->getXYPhasePortrait());
+
+    Portrait *table = new Portrait();
+    table->setAbscissa("x");
+    table->setOrdinate("y");
+    table->addPoint(-0.9, 5.1);
+    table->addPoint(0, 4);
+    table->addPoint(-1, 5);
+    table->addPoint(-2, 3);
+    table->addPoint(4, 8);
+    cout << endl << table->toJson();
+    ExportUtils::phasePortrait("wat.html", table);
+
+    return 0;
+}
+
+// TODO: move all the dynamically generated code somewhere else
+int main2() {
     // artificially generating initial data
     auto *initialData = new InitialData();
     initialData->setX0(0.011);

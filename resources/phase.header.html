@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>chart created with amCharts | amCharts</title>
+    <meta name="description" content="chart created using amCharts live editor" />
+
+    <!-- amCharts javascript sources -->
+    <script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script type="text/javascript" src="https://www.amcharts.com/lib/3/xy.js"></script>
+    <script type="text/javascript" src="https://www.amcharts.com/lib/3/themes/dark.js"></script>
+
+
+    <!-- amCharts javascript code -->
+    <script type="text/javascript">
+        AmCharts.makeChart("chartdiv",
+            {
+                "type": "xy",
+                "startDuration": 1.5,
+                "theme": "dark",
+                "trendLines": [],
+                "graphs": [
+                    {
+                        "balloonText": "x:<b>[[x]]</b> y:<b>[[y]]</b>",
+                        "bullet": "round",
+                        "bulletAlpha": 0,
+                        "id": "AmGraph-1",
+                        "lineColor": "#b0de09",
+                        "xField": "x",
+                        "yField": "y"
+                    }
+                ],
+                "guides": [],
+                "valueAxes": [
+                    {
+                        "id": "ValueAxis-1",
+                        "axisAlpha": 0
+                    },
+                    {
+                        "id": "ValueAxis-2",
+                        "position": "bottom",
+                        "axisAlpha": 0
+                    }
+                ],
+                "allLabels": [],
+                "balloon": {},
+                "titles": [],
+                "dataProvider":

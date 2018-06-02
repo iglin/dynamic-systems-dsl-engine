@@ -6,12 +6,14 @@
 #define DYNAMIC_SYSTEMS_DSL_POINTSTABLE_H
 
 #include <map>
+#include "ChartPoints.h"
 
 using namespace std;
 
-class PointsTable {
+class PointsTable : public ChartPoints {
 private:
-    string coordName = string("x");
+    string abscissa = string("t");
+    string ordinate = string("x");
     map<double, double> *points;
 
     string stringifyPoint(pair<double, double> point);
@@ -21,9 +23,11 @@ public:
 
     PointsTable(map<double, double> *points);
 
-    explicit PointsTable(const string &coordName);
+    explicit PointsTable(const string &ordinate);
 
-    PointsTable(const string &coordName, map<double, double> *points);
+    PointsTable(const string &abscissa, const string &ordinate);
+
+    PointsTable(const string &ordinate, map<double, double> *points);
 
     virtual ~PointsTable();
 
@@ -39,9 +43,13 @@ public:
 
     void replacePoint(double x, double y);
 
-    const string &getCoordName() const;
+    const string &getAbscissa() const;
 
-    void setCoordName(const string &coordName);
+    void setAbscissa(const string &abscissa);
+
+    const string &getOrdinate() const;
+
+    void setOrdinate(const string &ordinate);
 
     map<double, double> *getPoints() const;
 
@@ -49,7 +57,7 @@ public:
 
     string toString();
 
-    string toJson();
+    string toJson() override;
 };
 
 

@@ -7,9 +7,8 @@
 
 #include <cmath>
 
-#define dx (pow(sin(t * x), 9999949.0123) - 5.092 * sqrt(-x + 99.23))
-#define dy (pow(y, 5000) + (tan(M_PI + 4 * y) + 1 / (1 - sin(t * M_PI / 2))) / (exp(t)))
-#define dz (exp(pow(-312323.0923 * t, log10(200131 - atan(z))) * sqrt(t - log2(pow(z, exp(sin(pow((t * M_PI), 23423500))))))))
+#define dx (3*x - 4*y)
+#define dy (2*x - y)
 
 
 class InitialData {
